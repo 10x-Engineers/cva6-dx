@@ -144,7 +144,7 @@ module ariane_gate_tb;
         end
     end
 
-    cva6_rvfi #(
+    cva6dx_rvfi #(
       .CVA6Cfg   (CVA6Cfg),
       .rvfi_instr_t(rvfi_instr_t),
       .rvfi_csr_t(rvfi_csr_t),

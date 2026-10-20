@@ -48,7 +48,7 @@ module instr_tracer #(
   input logic [CVA6Cfg.PLEN-1:0]                       ld_paddr,
   input bp_resolve_t                                   resolve_branch, // misprediction
   input exception_t                                    commit_exception,
-  input riscv::priv_lvl_t                              priv_lvl, // current privilege level
+  input cva6dx_riscv_pkg::priv_lvl_t                              priv_lvl, // current privilege level
   input logic                                          debug_mode,
 
   input logic[CVA6Cfg.XLEN-1:0]                        hart_id_i
@@ -81,7 +81,7 @@ module instr_tracer #(
     $display("[TRACER] Output filename is: %s", fn);
 
     f = $fopen(fn,"w");
-    if (ariane_pkg::ENABLE_SPIKE_COMMIT_LOG) commit_log = $fopen(fn_commit_log, "w");
+    if (cva6dx_pkg::ENABLE_SPIKE_COMMIT_LOG) commit_log = $fopen(fn_commit_log, "w");
   endfunction : create_file
 
   task trace();
@@ -153,12 +153,12 @@ module instr_tracer #(
           issue_commit_instruction = issue_queue.pop_front();
           issue_sbe_item = issue_sbe_queue.pop_front();
           // check if the instruction retiring is a load or store, get the physical address accordingly
-          if (commit_instr[i].fu == ariane_pkg::LOAD)
+          if (commit_instr[i].fu == cva6dx_pkg::LOAD)
             address_mapping = load_mapping.pop_front();
-          else if (commit_instr[i].fu == ariane_pkg::STORE)
+          else if (commit_instr[i].fu == cva6dx_pkg::STORE)
             address_mapping = store_mapping.pop_front();
 
-          if (commit_instr[i].fu == ariane_pkg::CTRL_FLOW)
+          if (commit_instr[i].fu == cva6dx_pkg::CTRL_FLOW)
             bp_instruction = bp.pop_front();
 
           // all the queues have been popped
@@ -179,7 +179,7 @@ module instr_tracer #(
                 debug_mode,
                 bp_instruction
             );
-          end else if (ariane_pkg::is_rd_fpr(commit_instruction.op)) begin
+          end else if (cva6dx_pkg::is_rd_fpr(commit_instruction.op)) begin
             printInstr(
                 issue_sbe_item,
                 issue_commit_instruction,
@@ -208,7 +208,7 @@ module instr_tracer #(
         // --------------
         // Exceptions
         // --------------
-        if (i == 0 && commit_exception.valid && !(debug_mode && commit_exception.cause == riscv::BREAKPOINT)) begin
+        if (i == 0 && commit_exception.valid && !(debug_mode && commit_exception.cause == cva6dx_riscv_pkg::BREAKPOINT)) begin
           // print exception
           printException(commit_instr[0].pc, commit_exception.cause, commit_exception.tval);
         end
@@ -254,7 +254,7 @@ module instr_tracer #(
     bp              = {};
   endfunction
 
-  function void printInstr(scoreboard_entry_t sbe, logic [31:0] instr, logic [63:0] result, logic dest_we_valid, logic dest_is_fp, logic [CVA6Cfg.PLEN-1:0] paddr, riscv::priv_lvl_t priv_lvl, logic debug_mode, bp_resolve_t bp);
+  function void printInstr(scoreboard_entry_t sbe, logic [31:0] instr, logic [63:0] result, logic dest_we_valid, logic dest_is_fp, logic [CVA6Cfg.PLEN-1:0] paddr, cva6dx_riscv_pkg::priv_lvl_t priv_lvl, logic debug_mode, bp_resolve_t bp);
     automatic instr_trace_item #(
       .CVA6Cfg(CVA6Cfg),
       .bp_resolve_t(bp_resolve_t),
@@ -276,9 +276,9 @@ module instr_tracer #(
     );
     // print instruction to console
     automatic string print_instr = iti.printInstr();
-    automatic logic commit_is_fp = dest_we_valid ? dest_is_fp : ariane_pkg::is_rd_fpr(sbe.op);
-    if (ariane_pkg::ENABLE_SPIKE_COMMIT_LOG && !debug_mode) begin
-      $fwrite(commit_log, riscv::spikeCommitLog(sbe.pc, priv_lvl, instr, sbe.rd, result, commit_is_fp));
+    automatic logic commit_is_fp = dest_we_valid ? dest_is_fp : cva6dx_pkg::is_rd_fpr(sbe.op);
+    if (cva6dx_pkg::ENABLE_SPIKE_COMMIT_LOG && !debug_mode) begin
+      $fwrite(commit_log, cva6dx_riscv_pkg::spikeCommitLog(sbe.pc, priv_lvl, instr, sbe.rd, result, commit_is_fp));
     end
     $fwrite(f, {print_instr, "\n"});
   endfunction
@@ -295,7 +295,7 @@ module instr_tracer #(
 
   function void close();
     if (f) $fclose(f);
-    if (ariane_pkg::ENABLE_SPIKE_COMMIT_LOG && commit_log) $fclose(commit_log);
+    if (cva6dx_pkg::ENABLE_SPIKE_COMMIT_LOG && commit_log) $fclose(commit_log);
   endfunction
 
 

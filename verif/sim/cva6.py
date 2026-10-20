@@ -878,8 +878,8 @@ def load_config(args, cwd):
       args.testlist = cwd + "/target/"+ args.target +"/testlist.yaml"
     if args.target == "hwconfig":
       base, changes = user_config.parse_derive_args(args.hwconfig_opts.split())
-      input_file = f"../../core/include/{base}_config_pkg.sv"
-      output_file = "../../core/include/hwconfig_config_pkg.sv"
+      input_file = f"../../design/cfg/{base}_config_pkg.sv"
+      output_file = "../../design/cfg/hwconfig_config_pkg.sv"
       user_config.derive_config(input_file, output_file, changes)
       args.hwconfig_opts = user_config.get_config(output_file)
       os.system("mkdir -p ../../config/gen_from_riscv_config/hwconfig/spike")

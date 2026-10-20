@@ -12,8 +12,8 @@ function st_core_cntrl_cfg cva6pkg_to_core_cntrl_cfg(st_core_cntrl_cfg cfg);
 
     cfg.ilen = 32;
 
-    cfg.marchid = ariane_pkg::ARIANE_MARCHID;
-    cfg.mvendorid = ariane_pkg::OPENHWGROUP_MVENDORID;
+    cfg.marchid = cva6dx_pkg::ARIANE_MARCHID;
+    cfg.mvendorid = cva6dx_pkg::OPENHWGROUP_MVENDORID;
 
     cfg.ext_i_supported = 1;
     cfg.ext_a_supported = CVA6Cfg.RVA;

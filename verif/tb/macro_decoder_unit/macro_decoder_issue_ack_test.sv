@@ -28,7 +28,7 @@ module macro_decoder_issue_ack_test;
 
   always #5 clk_i = ~clk_i;
 
-  macro_decoder #(
+  cva6dx_macro_decoder #(
       .CVA6Cfg(CVA6Cfg)
   ) dut (
       .instr_i,

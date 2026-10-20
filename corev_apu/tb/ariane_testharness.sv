@@ -140,7 +140,7 @@ module ariane_testharness #(
   assign debug_req_valid     = (jtag_enable[0]) ? jtag_req_valid     : dmi_req_valid;
   assign debug_resp_ready    = (jtag_enable[0]) ? jtag_resp_ready    : dmi_resp_ready;
   assign debug_req           = (jtag_enable[0]) ? jtag_dmi_req       : dmi_req;
-  if (ariane_pkg::RVFI) begin
+  if (cva6dx_pkg::RVFI) begin
     assign exit_o              = (jtag_enable[0]) ? jtag_exit          : rvfi_exit;
   end else begin
     assign exit_o              = (jtag_enable[0]) ? jtag_exit          : dmi_exit;
@@ -263,7 +263,7 @@ module ariane_testharness #(
     .dmactive_o           (                             ), // active debug session
     .debug_req_o          ( debug_req_core_ungtd        ),
     .unavailable_i        ( '0                          ),
-    .hartinfo_i           ( {ariane_pkg::DebugHartInfo} ),
+    .hartinfo_i           ( {cva6dx_pkg::DebugHartInfo} ),
     .slave_req_i          ( dm_slave_req                ),
     .slave_we_i           ( dm_slave_we                 ),
     .slave_addr_i         ( dm_slave_addr               ),
@@ -310,7 +310,7 @@ module ariane_testharness #(
   `AXI_ASSIGN_FROM_REQ(slave[1], dm_axi_m_req)
   `AXI_ASSIGN_TO_RESP(dm_axi_m_resp, slave[1])
 
-  axi_adapter #(
+  cva6dx_axi_adapter #(
     .CVA6Cfg               ( CVA6Cfg                   ),
     .DATA_WIDTH            ( AXI_DATA_WIDTH            ),
     .axi_req_t             ( ariane_axi::req_t         ),
@@ -319,8 +319,8 @@ module ariane_testharness #(
     .clk_i                 ( clk_i                     ),
     .rst_ni                ( rst_ni                    ),
     .req_i                 ( dm_master_req             ),
-    .type_i                ( ariane_pkg::SINGLE_REQ    ),
-    .amo_i                 ( ariane_pkg::AMO_NONE      ),
+    .type_i                ( cva6dx_pkg::SINGLE_REQ    ),
+    .amo_i                 ( cva6dx_pkg::AMO_NONE      ),
     .gnt_o                 ( dm_master_gnt             ),
     .addr_i                ( dm_master_add             ),
     .we_i                  ( dm_master_we              ),
@@ -789,7 +789,7 @@ module ariane_testharness #(
         .done_o            (encap_fifo_pop)
     );
 
-  cva6_rvfi #(
+  cva6dx_rvfi #(
       .CVA6Cfg   (CVA6Cfg),
       .rvfi_instr_t(rvfi_instr_t),
       .rvfi_csr_t(rvfi_csr_t),

@@ -1,6 +1,6 @@
 # CSR WFI single-step regression
 
-This test instantiates the real `core/csr_regfile.sv` to reproduce CVA6 issue
+This test instantiates the real `design/csr/cva6dx_csr_regfile.sv` to reproduce CVA6 issue
 #3497. It uses the `cv32a6_imac_sv32` configuration and a second instance of
 that configuration with `DebugEn=0`. It does not force internal DUT state.
 
@@ -29,7 +29,7 @@ disabled; the driver checks that the selected configuration disables triggers.
 ## Requirements
 
 Use a Verilator 5 installation supporting `--binary --timing`, GNU Make, and
-a C++20 compiler. The `core/cvfpu` submodule must be initialized for its package.
+a C++20 compiler. The `ip/cvfpu` submodule must be initialized for its package.
 No RISC-V compiler, Spike libraries, or VCS license is needed.
 
 ## Run

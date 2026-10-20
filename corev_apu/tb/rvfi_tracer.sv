@@ -78,7 +78,7 @@ module rvfi_tracer #(
     funct5 = insn[31:27];
     rm = insn[14:12];
 
-    if (opcode != riscv::OpcodeOpFp) begin
+    if (opcode != cva6dx_riscv_pkg::OpcodeOpFp) begin
       return 1'b0;
     end
 

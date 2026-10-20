@@ -255,7 +255,7 @@ hello-pk:
     - if: $CI_KIND == "dev"
       changes:
         paths:
-          - core/**/*
+          - design/**/*
           - corev_apu/**/*
         compare_to: master
     - when: manual

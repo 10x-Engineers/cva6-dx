@@ -112,19 +112,19 @@ ifndef TARGET_CFG
 endif
 
 # HPDcache directory
-HPDCACHE_DIR ?= $(CVA6_REPO_DIR)/core/cache_subsystem/hpdcache
+HPDCACHE_DIR ?= $(CVA6_REPO_DIR)/ip/hpdcache
 export HPDCACHE_DIR
 
 # Sources
 # Package files -> compile first
-ariane_pkg := \
+cva6dx_pkg_files := \
               corev_apu/tb/ariane_axi_pkg.sv                         \
               corev_apu/tb/axi_intf.sv                               \
               corev_apu/register_interface/src/reg_intf.sv           \
               corev_apu/tb/ariane_soc_pkg.sv                         \
               corev_apu/riscv-dbg/src/dm_pkg.sv                      \
               corev_apu/tb/ariane_axi_soc_pkg.sv
-ariane_pkg := $(addprefix $(root-dir), $(ariane_pkg))
+cva6dx_pkg_files := $(addprefix $(root-dir), $(cva6dx_pkg_files))
 
 # Test packages
 test_pkg := $(wildcard tb/test/*/*sequence_pkg.sv*) \
@@ -160,7 +160,7 @@ src :=  $(if $(spike-tandem),verif/tb/core/uvma_core_cntrl_pkg.sv)              
         $(if $(spike-tandem),verif/tb/core/uvmc_rvfi_reference_model_pkg.sv)         \
         $(if $(spike-tandem),verif/tb/core/uvmc_rvfi_scoreboard_pkg.sv)              \
         $(if $(spike-tandem),corev_apu/tb/common/spike.sv)                           \
-        core/cva6_rvfi.sv                                                            \
+        design/rvfi/cva6dx_rvfi.sv                                                            \
         corev_apu/src/ariane.sv                                                      \
         $(wildcard corev_apu/bootrom/*.sv)                                           \
         $(wildcard corev_apu/clint/*.sv)                                             \
@@ -231,8 +231,8 @@ src :=  $(if $(spike-tandem),verif/tb/core/uvma_core_cntrl_pkg.sv)              
         corev_apu/instr_tracing/rv_encapsulator-main/src/rtl/encapsulator.sv
 src := $(addprefix $(root-dir), $(src))
 
-copro_src := core/cvxif_example/include/cvxif_instr_pkg.sv \
-             $(wildcard core/cvxif_example/*.sv)
+copro_src := examples/cvxif/include/cvxif_instr_pkg.sv \
+             $(wildcard examples/cvxif/*.sv)
 copro_src := $(addprefix $(root-dir), $(copro_src))
 
 uart_src := $(wildcard corev_apu/fpga/src/apb_uart/src/vhdl_orig/*.vhd)
@@ -261,7 +261,7 @@ fpga_src :=  $(wildcard corev_apu/fpga/src/*.sv) $(wildcard corev_apu/fpga/src/a
 altera_src := $(shell find $(root-dir)/corev_apu/altera/src -type f \( -name "*.v" -o -name "*.sv" -o -name "*.svh" \) -print | sed 's|//|/|g')
 altera_src += $(src)
 altera_src += $(shell find $(root-dir)/corev_apu/fpga/src -type f \( -name "*.v" -o -name "*.sv" \) -print | sed 's|//|/|g')
-altera_src += $(shell find $(root-dir)core/cvfpu/src/common_cells/src/ -maxdepth 1 -type f \( -name "*.v" -o -name "*.sv" -o -name "*.vhd" -o -name "*.svh" \) -print)
+altera_src += $(shell find $(root-dir)ip/cvfpu/src/common_cells/src/ -maxdepth 1 -type f \( -name "*.v" -o -name "*.sv" -o -name "*.vhd" -o -name "*.svh" \) -print)
 altera_axi_src := $(shell find $(root-dir)/vendor/pulp-platform/axi/src -type f \( -name "*.v" -o -name "*.sv" \) -print | sed 's|//|/|g')
 
 altera_src += $(root-dir)corev_apu/rv_plic/rtl/top_pkg.sv \
@@ -273,9 +273,9 @@ altera_src += $(root-dir)corev_apu/rv_plic/rtl/top_pkg.sv \
 							$(root-dir)corev_apu/rv_plic/rtl/prim_subreg.sv \
 							$(root-dir)vendor/pulp-platform/common_cells/src/cdc_fifo_gray.sv \
 							$(root-dir)riscv-dbg/src/dm_obi_top.sv \
-							$(root-dir)core/include/instr_tracer_pkg.sv \
-							$(root-dir)core/cvfpu/src/fpu_div_sqrt_mvp/hdl/div_sqrt_mvp_wrapper.sv \
-							$(root-dir)core/cache_subsystem/amo_alu.sv
+							$(root-dir)design/include/cva6dx_instr_tracer_pkg.sv \
+							$(root-dir)ip/cvfpu/src/fpu_div_sqrt_mvp/hdl/div_sqrt_mvp_wrapper.sv \
+							$(root-dir)design/cache/cva6dx_amo_alu.sv
 
 altera_filter := corev_apu/tb/ariane_testharness.sv \
 								corev_apu/tb/ariane_peripherals.sv \
@@ -307,7 +307,7 @@ fpga_src += corev_apu/fpga/src/bootrom/bootrom_$(XLEN).sv
 fpga_src := $(addprefix $(root-dir), $(fpga_src))
 
 # look for testbenches
-tbs := $(top_level_path) corev_apu/tb/ariane_testharness.sv core/cva6_rvfi.sv
+tbs := $(top_level_path) corev_apu/tb/ariane_testharness.sv design/rvfi/cva6dx_rvfi.sv
 
 tbs := $(addprefix $(root-dir), $(tbs))
 
@@ -335,7 +335,7 @@ incdir := $(CVA6_REPO_DIR)/vendor/pulp-platform/common_cells/include/ $(CVA6_REP
           $(CVA6_REPO_DIR)/verif/core-v-verif/lib/uvm_components/uvmc_rvfi_scoreboard/ \
           $(CVA6_REPO_DIR)/verif/core-v-verif/lib/uvm_agents/uvma_core_cntrl/ \
           $(CVA6_REPO_DIR)/verif/tb/core/ \
-          $(CVA6_REPO_DIR)/core/include/ \
+          $(CVA6_REPO_DIR)/design/include/ \
           $(HPDCACHE_DIR)/rtl/include \
           $(HPDCACHE_DIR)/rtl/src/utils/ecc \
           $(CVA6_REPO_DIR)/corev_apu/instr_tracing/ITI/include \
@@ -393,13 +393,13 @@ else
 	questa-cmd += +jtag_rbb_enable=0
 endif
 
-flist ?= core/Flist.cva6
+flist ?= design/cva6dx_core.f
 
 vcs_build: $(dpi-library)/ariane_dpi.so
 	mkdir -p $(vcs-library)
 	cd $(vcs-library) &&\
 	vlogan $(if $(VERDI), -kdb,) -full64 -nc -sverilog +define+$(defines) -assert svaext -f $(flist) $(list_incdir) ../corev_apu/tb/common/mock_uart.sv -timescale=1ns/1ns &&\
-	vlogan $(if $(VERDI), -kdb,) -full64 -nc -sverilog +define+$(defines) $(filter %.sv,$(ariane_pkg)) +incdir+core/include/+$(VCS_HOME)/etc/uvm-1.2/dpi &&\
+	vlogan $(if $(VERDI), -kdb,) -full64 -nc -sverilog +define+$(defines) $(filter %.sv,$(cva6dx_pkg_files)) +incdir+design/include/+$(VCS_HOME)/etc/uvm-1.2/dpi &&\
 	vlogan $(if $(VERDI), -kdb,) -full64 -nc -sverilog $(uart_src_sv) &&\
 	vlogan $(if $(VERDI), -kdb,) -full64 -nc -sverilog -assert svaext +define+$(defines) +incdir+$(VCS_HOME)/etc/uvm/src $(VCS_HOME)/etc/uvm/src/uvm_pkg.sv  $(filter %.sv,$(src)) $(list_incdir) &&\
 	vlogan $(if $(VERDI), -kdb,) -full64 -nc -sverilog -ntb_opts uvm-1.2 &&\
@@ -420,8 +420,8 @@ build: $(library) $(library)/.build-srcs $(library)/.build-tb $(dpi-library)/ari
 
 # src files
 $(library)/.build-srcs: $(library)
-	$(VLOG) $(compile_flag) -timescale "1ns / 1ns" -work $(library) -pedanticerrors -f core/Flist.cva6 $(list_incdir) -suppress 2583 +defines+$(defines)
-	$(VLOG) $(compile_flag) -work $(library) $(filter %.sv,$(ariane_pkg)) $(list_incdir) -suppress 2583 +defines+$(defines)
+	$(VLOG) $(compile_flag) -timescale "1ns / 1ns" -work $(library) -pedanticerrors -f design/cva6dx_core.f $(list_incdir) -suppress 2583 +defines+$(defines)
+	$(VLOG) $(compile_flag) -work $(library) $(filter %.sv,$(cva6dx_pkg_files)) $(list_incdir) -suppress 2583 +defines+$(defines)
 	# Suppress message that always_latch may not be checked thoroughly by QuestaSim.
 	$(VCOM) $(compile_flag_vhd) -work $(library) $(filter %.vhd,$(uart_src)) +defines+$(defines)
 	$(VLOG) $(compile_flag) -timescale "1ns / 1ns" -work $(library) -pedanticerrors $(filter %.sv,$(src)) $(tbs) $(list_incdir) -suppress 2583 +defines+$(defines)
@@ -534,7 +534,7 @@ XRUN_COMPL_LOG     ?= xrun_compl.log
 XRUN_RUN_LOG       ?= xrun_run.log
 CVA6_HOME	   ?= $(realpath -s $(root-dir))
 
-XRUN_INCDIR :=+incdir+$(CVA6_HOME)/core/include 			\
+XRUN_INCDIR :=+incdir+$(CVA6_HOME)/design/include 			\
 	+incdir+$(HPDCACHE_DIR)/rtl/include				\
 	+incdir+$(HPDCACHE_DIR)/rtl/src/utils/ecc			\
 	+incdir+$(CVA6_HOME)/vendor/pulp-platform/axi/include/		\
@@ -562,8 +562,8 @@ XRUN_DISABLED_WARNINGS 	:= $(patsubst %, -nowarn %, $(XRUN_DISABLED_WARNINGS))
 XRUN_COMP = $(XRUN_COMP_FLAGS)		\
 	$(XRUN_DISABLED_WARNINGS) 	\
 	$(XRUN_INCDIR)		      	\
-	-f ../core/Flist.cva6    	\
-	$(filter %.sv, $(ariane_pkg)) 	\
+	-f ../design/cva6dx_core.f    	\
+	$(filter %.sv, $(cva6dx_pkg_files)) 	\
 	$(filter %.sv, $(src))	      	\
 	$(filter %.vhd, $(uart_src))  	\
 	$(filter %.sv, $(XRUN_TB))
@@ -671,10 +671,10 @@ xrun-ci: xrun-asm-tests xrun-amo-tests xrun-mul-tests xrun-fp-tests xrun-benchma
 
 # verilator-specific
 verilate_command := $(verilator) --no-timing verilator_config.vlt                                                \
-                    -f core/Flist.cva6                                                                           \
-                    core/cva6_rvfi.sv                                                                            \
-                    $(filter-out %.vhd, $(ariane_pkg))                                                           \
-                    $(filter-out core/fpu_wrap.sv, $(filter-out %.vhd, $(filter-out %_config_pkg.sv, $(src))))   \
+                    -f design/cva6dx_core.f                                                                           \
+                    design/rvfi/cva6dx_rvfi.sv                                                                            \
+                    $(filter-out %.vhd, $(cva6dx_pkg_files))                                                           \
+                    $(filter-out design/execute/cva6dx_fpu_wrap.sv, $(filter-out %.vhd, $(filter-out %_config_pkg.sv, $(src))))   \
                     +define+$(defines)$(if $(TRACE_FAST),+VM_TRACE)$(if $(TRACE_COMPACT),+VM_TRACE+VM_TRACE_FST) \
                     corev_apu/tb/common/mock_uart.sv                                                             \
                     +incdir+corev_apu/axi_node                                                                   \
@@ -796,9 +796,9 @@ src_flist = $(shell \
 	    CVA6_REPO_DIR=$(CVA6_REPO_DIR) \
 	    TARGET_CFG=$(TARGET_CFG) \
 	    HPDCACHE_DIR=$(HPDCACHE_DIR) \
-	    python3 util/flist_flattener.py core/Flist.cva6)
+	    python3 util/flist_flattener.py design/cva6dx_core.f)
 fpga_filter := $(addprefix $(root-dir), corev_apu/bootrom/bootrom.sv)
-fpga_filter += $(addprefix $(root-dir), core/include/instr_tracer_pkg.sv)
+fpga_filter += $(addprefix $(root-dir), design/include/cva6dx_instr_tracer_pkg.sv)
 fpga_filter += $(addprefix $(root-dir), src/util/ex_trace_item.sv)
 fpga_filter += $(addprefix $(root-dir), src/util/instr_trace_item.sv)
 fpga_filter += $(addprefix $(root-dir), common/local/util/instr_tracer.sv)
@@ -806,18 +806,18 @@ fpga_filter += $(addprefix $(root-dir), vendor/pulp-platform/tech_cells_generic/
 fpga_filter += $(addprefix $(root-dir), common/local/util/tc_sram_wrapper.sv)
 fpga_filter += $(addprefix $(root-dir), corev_apu/tb/ariane_peripherals.sv)
 fpga_filter += $(addprefix $(root-dir), corev_apu/tb/ariane_testharness.sv)
-fpga_filter += $(addprefix $(root-dir), core/cache_subsystem/hpdcache/rtl/src/common/macros/behav/hpdcache_sram_1rw.sv)
-fpga_filter += $(addprefix $(root-dir), core/cache_subsystem/hpdcache/rtl/src/common/macros/behav/hpdcache_sram_wbyteenable_1rw.sv)
-fpga_filter += $(addprefix $(root-dir), core/cache_subsystem/hpdcache/rtl/src/common/macros/behav/hpdcache_sram_wmask_1rw.sv)
+fpga_filter += $(addprefix $(root-dir), ip/hpdcache/rtl/src/common/macros/behav/hpdcache_sram_1rw.sv)
+fpga_filter += $(addprefix $(root-dir), ip/hpdcache/rtl/src/common/macros/behav/hpdcache_sram_wbyteenable_1rw.sv)
+fpga_filter += $(addprefix $(root-dir), ip/hpdcache/rtl/src/common/macros/behav/hpdcache_sram_wmask_1rw.sv)
 
 $(addprefix $(root-dir), corev_apu/fpga/src/bootrom/bootrom_$(XLEN).sv):
 	$(MAKE) -C corev_apu/fpga/src/bootrom BOARD=$(BOARD) XLEN=$(XLEN) PLATFORM=$(PLATFORM) bootrom_$(XLEN).sv
 
-fpga: $(ariane_pkg) $(src) $(fpga_src) $(uart_src) $(dpti_src) $(src_flist)
+fpga: $(cva6dx_pkg_files) $(src) $(fpga_src) $(uart_src) $(dpti_src) $(src_flist)
 	@echo "[FPGA] Generate sources"
 	@echo read_vhdl        {$(uart_src)}    > corev_apu/fpga/scripts/add_sources.tcl
 	@echo read_vhdl        {$(dpti_src)}   >> corev_apu/fpga/scripts/add_sources.tcl
-	@echo read_verilog -sv {$(ariane_pkg)} >> corev_apu/fpga/scripts/add_sources.tcl
+	@echo read_verilog -sv {$(cva6dx_pkg_files)} >> corev_apu/fpga/scripts/add_sources.tcl
 	@echo read_verilog -sv {$(filter-out $(fpga_filter), $(src_flist))}		>> corev_apu/fpga/scripts/add_sources.tcl
 	@echo read_verilog -sv {$(filter-out $(fpga_filter), $(src))} 	   >> corev_apu/fpga/scripts/add_sources.tcl
 	@echo read_verilog -sv {$(fpga_src)}   >> corev_apu/fpga/scripts/add_sources.tcl
@@ -826,9 +826,9 @@ fpga: $(ariane_pkg) $(src) $(fpga_src) $(uart_src) $(dpti_src) $(src_flist)
 
 altera: PLATFORM := "PLAT_AGILEX"
 
-altera: $(ariane_pkg) $(src) $(fpga_src) $(src_flist)
+altera: $(cva6dx_pkg_files) $(src) $(fpga_src) $(src_flist)
 	@echo "[FPGA] Generate sources"
-	@echo $(ariane_pkg) > corev_apu/altera/sourcelist.txt
+	@echo $(cva6dx_pkg_files) > corev_apu/altera/sourcelist.txt
 	@echo $(filter-out $(fpga_filter), $(src_flist))		>> corev_apu/altera/sourcelist.txt
 	@echo $(filter-out $(fpga_filter) $(altera_filter), $(src)) 	   >> corev_apu/altera/sourcelist.txt
 	@echo $(filter-out $(altera_filter), $(fpga_src))		 >> corev_apu/altera/sourcelist.txt

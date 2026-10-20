@@ -67,11 +67,11 @@ set_option enableSV09 yes
 ## Logical to Physical library mapping for precompiled libraries
 ## Example command :  set_option lib L1 /PROJECT_DIR/results/spyglass_precompile/L1_lib
 ######################################################################################################
-set_option incdir ../core/include
+set_option incdir ../design/include
 set_option incdir ../common/local/util/
-set_option incdir ../core/cvxif_example
+set_option incdir ../examples/cvxif
 #~ set_option incdir ../common/local/util
 set_option incdir ../vendor/pulp-platform/axi/include
 set_option incdir ../vendor/pulp-platform/common_cells/src
 set_option incdir ../vendor/pulp-platform/common_cells/include/
-set_option incdir ../core/cache_subsystem/hpdcache/rtl/
+set_option incdir ../ip/hpdcache/rtl/

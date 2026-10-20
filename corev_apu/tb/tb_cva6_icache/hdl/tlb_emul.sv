@@ -14,7 +14,7 @@
 //
 
 
-module tlb_emul import ariane_pkg::*; import wt_cache_pkg::*; #(
+module tlb_emul import cva6dx_pkg::*; import cva6dx_wt_cache_pkg::*; #(
   parameter TlbRandHitRate = 10 //in percent
 ) (
   input logic            clk_i,

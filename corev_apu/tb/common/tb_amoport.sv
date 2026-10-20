@@ -16,7 +16,7 @@
 
 `include "tb.svh"
 
-program tb_amoport import ariane_pkg::*; import tb_pkg::*; #(
+program tb_amoport import cva6dx_pkg::*; import tb_pkg::*; #(
   parameter config_pkg::cva6_cfg_t CVA6Cfg = config_pkg::cva6_cfg_empty,
   parameter string       PortName      = "atomics port 0",
   parameter              MemWords      = 1024*1024,// in 64bit words
@@ -83,7 +83,7 @@ program tb_amoport import ariane_pkg::*; import tb_pkg::*; #(
       // Apply random stimuli, choose random AMO operand
       void'(randomize(amo_op) with {!(amo_op inside {AMO_NONE, AMO_CAS1, AMO_CAS2});});
       void'(randomize(data));
-      if (riscv::XLEN == 64)
+      if (cva6dx_riscv_pkg::XLEN == 64)
         void'(randomize(size) with {size >= 2; size <= $clog2(CVA6Cfg.XLEN/8);});
       else
         size = 'h2;

@@ -29,7 +29,7 @@ module trigger_dmode_test;
 
   always #1 clk = !clk;
 
-  trigger_module #(
+  cva6dx_trigger_module #(
       .CVA6Cfg(TestCfg),
       .exception_t(exception_t)
   ) dut (
@@ -37,7 +37,7 @@ module trigger_dmode_test;
       .rst_ni(rst_n),
       .commit_ack_i('0),
       .ex_i('0),
-      .priv_lvl_i(riscv::PRIV_LVL_M),
+      .priv_lvl_i(cva6dx_riscv_pkg::PRIV_LVL_M),
       .debug_mode_i(debug_mode),
       .mret_i(1'b0),
       .sret_i(1'b0),

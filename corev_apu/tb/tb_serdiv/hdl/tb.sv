@@ -17,7 +17,7 @@
 
 `include "tb.svh"
 
-import ariane_pkg::*;
+import cva6dx_pkg::*;
 import tb_pkg::*;
 
 // tb package
@@ -93,7 +93,7 @@ module tb;
 
 
   assign OpBIsZero_SI = ~(|op_b_i);
-  serdiv #(.WIDTH(WIDTH)) i_dut (.*);
+  cva6dx_serdiv #(.WIDTH(WIDTH)) i_dut (.*);
 
 ///////////////////////////////////////////////////////////////////////////////
 // application process

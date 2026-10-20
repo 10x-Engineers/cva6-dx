@@ -349,7 +349,7 @@ dm_top #(
     .dmactive_o       ( dmactive          ), // active debug session
     .debug_req_o      ( debug_req_irq     ),
     .unavailable_i    ( '0                ),
-    .hartinfo_i       ( {ariane_pkg::DebugHartInfo} ),
+    .hartinfo_i       ( {cva6dx_pkg::DebugHartInfo} ),
     .slave_req_i      ( dm_slave_req      ),
     .slave_we_i       ( dm_slave_we       ),
     .slave_addr_i     ( dm_slave_addr     ),
@@ -551,7 +551,7 @@ logic [1:0]    axi_adapter_size;
 
 assign axi_adapter_size = CVA6Cfg.IS_XLEN64 ? 2'b11 : 2'b10;
 
-axi_adapter #(
+cva6dx_axi_adapter #(
     .CVA6Cfg               ( CVA6Cfg                  ),
     .DATA_WIDTH            ( CVA6Cfg.XLEN              ),
     .axi_req_t             ( ariane_axi::req_t        ),
@@ -560,8 +560,8 @@ axi_adapter #(
     .clk_i                 ( clk                       ),
     .rst_ni                ( rst_n                     ),
     .req_i                 ( dm_master_req             ),
-    .type_i                ( ariane_pkg::SINGLE_REQ    ),
-    .amo_i                 ( ariane_pkg::AMO_NONE      ),
+    .type_i                ( cva6dx_pkg::SINGLE_REQ    ),
+    .amo_i                 ( cva6dx_pkg::AMO_NONE      ),
     .gnt_o                 ( dm_master_gnt             ),
     .addr_i                ( dm_master_add             ),
     .we_i                  ( dm_master_we              ),

@@ -18,7 +18,7 @@
 
 
 
-program tb_writeport  import tb_pkg::*; import ariane_pkg::*; #(
+program tb_writeport  import tb_pkg::*; import cva6dx_pkg::*; #(
   parameter config_pkg::cva6_cfg_t CVA6Cfg = config_pkg::cva6_cfg_empty,
   parameter string       PortName      = "write port 0",
   parameter              MemWords      = 1024*1024,// in 64bit words

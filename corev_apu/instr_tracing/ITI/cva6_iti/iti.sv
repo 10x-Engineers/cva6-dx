@@ -43,7 +43,7 @@ module cva6_iti #(
     logic [CVA6Cfg.XLEN-1:0] pc;
     iti_pkg::itype_t         itype;
     logic                    compressed;
-    riscv::priv_lvl_t        priv;
+    cva6dx_riscv_pkg::priv_lvl_t        priv;
     logic [63:0]             cycles;
   };
 
@@ -54,7 +54,7 @@ module cva6_iti #(
     iti_pkg::itype_t         itype;
     logic                    ilastsize;
     logic [CVA6Cfg.XLEN-1:0] iaddr;
-    riscv::priv_lvl_t        priv;
+    cva6dx_riscv_pkg::priv_lvl_t        priv;
     logic [CAUSE_LEN-1:0]    cause;
     logic [CVA6Cfg.XLEN-1:0] tval;
     logic [63:0]             cycles;
@@ -147,7 +147,7 @@ module cva6_iti #(
   always_comb begin
     iti_to_encoder_o.cause  = '0;
     iti_to_encoder_o.tval   = '0;
-    iti_to_encoder_o.priv   = riscv::PRIV_LVL_U;
+    iti_to_encoder_o.priv   = cva6dx_riscv_pkg::PRIV_LVL_U;
     iti_to_encoder_o.cycles = '0;
     for (int i = 0; i < CVA6Cfg.NrCommitPorts; i++) begin
       uop_entry[i].valid = valid_i[i];

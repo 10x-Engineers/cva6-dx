@@ -228,7 +228,7 @@ module riscv_peripherals #(
     .dmactive_o                                   , // active debug session
     .debug_req_o                                  ,
     .unavailable_i                                ,
-    .hartinfo_i           ( {NumHarts{ariane_pkg::DebugHartInfo}} ),
+    .hartinfo_i           ( {NumHarts{cva6dx_pkg::DebugHartInfo}} ),
     .slave_req_i          ( dm_slave_req         ),
     .slave_we_i           ( dm_slave_we          ),
     .slave_addr_i         ( dm_slave_addr        ),

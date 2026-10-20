@@ -22,7 +22,7 @@ from user_config import get_config
 def parameters_extractor(target):
 
     parameters = {}
-    file_in = "../core/include/config_pkg.sv"
+    file_in = "../design/include/config_pkg.sv"
 
     print("Input file " + file_in)
     with open(file_in, "r", encoding="utf-8") as fin:
@@ -44,7 +44,7 @@ def parameters_extractor(target):
                 )
                 descript = "TO_BE_COMPLETED"
 
-    config = get_config(f"../core/include/{target}_config_pkg.sv")
+    config = get_config(f"../design/cfg/{target}_config_pkg.sv")
     for name, parameter in parameters.items():
         parameter.value = config[name]
 

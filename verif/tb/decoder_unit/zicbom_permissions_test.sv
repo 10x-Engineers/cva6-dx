@@ -1,5 +1,5 @@
 module zicbom_permissions_test;
-  import ariane_pkg::*;
+  import cva6dx_pkg::*;
 
   function automatic config_pkg::cva6_cfg_t make_test_cfg();
     config_pkg::cva6_user_cfg_t cfg;
@@ -99,22 +99,22 @@ module zicbom_permissions_test;
   exception_t ex_i;
   logic [1:0] irq_i;
   irq_ctrl_t irq_ctrl_i;
-  riscv::priv_lvl_t priv_lvl_i;
+  cva6dx_riscv_pkg::priv_lvl_t priv_lvl_i;
   logic v_i;
   logic debug_mode_i;
-  riscv::xs_t fs_i;
-  riscv::xs_t vfs_i;
+  cva6dx_riscv_pkg::xs_t fs_i;
+  cva6dx_riscv_pkg::xs_t vfs_i;
   logic [2:0] frm_i;
-  riscv::xs_t vs_i;
+  cva6dx_riscv_pkg::xs_t vs_i;
   logic tvm_i;
   logic tw_i;
   logic vtw_i;
   logic tsr_i;
   logic hu_i;
 
-  riscv::cbie_t mcbie_i;
-  riscv::cbie_t scbie_i;
-  riscv::cbie_t hcbie_i;
+  cva6dx_riscv_pkg::cbie_t mcbie_i;
+  cva6dx_riscv_pkg::cbie_t scbie_i;
+  cva6dx_riscv_pkg::cbie_t hcbie_i;
 
   logic mcbcfe_i;
   logic scbcfe_i;
@@ -127,7 +127,7 @@ module zicbom_permissions_test;
 
   integer errors;
 
-  decoder #(
+  cva6dx_decoder #(
       .CVA6Cfg(CVA6Cfg),
       .branchpredict_sbe_t(branchpredict_sbe_t),
       .exception_t(exception_t),
@@ -176,9 +176,9 @@ module zicbom_permissions_test;
   );
 
   task automatic run_case(input string name, input logic [31:0] instr_word,
-                          input riscv::priv_lvl_t priv, input logic v, input logic hu,
-                          input riscv::cbie_t mcbie, input riscv::cbie_t scbie,
-                          input riscv::cbie_t hcbie, input logic mcbcfe, input logic scbcfe,
+                          input cva6dx_riscv_pkg::priv_lvl_t priv, input logic v, input logic hu,
+                          input cva6dx_riscv_pkg::cbie_t mcbie, input cva6dx_riscv_pkg::cbie_t scbie,
+                          input cva6dx_riscv_pkg::cbie_t hcbie, input logic mcbcfe, input logic scbcfe,
                           input logic hcbcfe, input logic expected_trap,
                           input logic [CVA6Cfg.XLEN-1:0] expected_cause, input fu_op expected_op);
     begin
@@ -231,21 +231,21 @@ module zicbom_permissions_test;
     ex_i = '0;
     irq_i = '0;
     irq_ctrl_i = '0;
-    priv_lvl_i = riscv::PRIV_LVL_M;
+    priv_lvl_i = cva6dx_riscv_pkg::PRIV_LVL_M;
     v_i = 1'b0;
     debug_mode_i = 1'b0;
-    fs_i = riscv::Off;
-    vfs_i = riscv::Off;
+    fs_i = cva6dx_riscv_pkg::Off;
+    vfs_i = cva6dx_riscv_pkg::Off;
     frm_i = '0;
-    vs_i = riscv::Off;
+    vs_i = cva6dx_riscv_pkg::Off;
     tvm_i = 1'b0;
     tw_i = 1'b0;
     vtw_i = 1'b0;
     tsr_i = 1'b0;
     hu_i = 1'b0;
-    mcbie_i = riscv::CBIE_INVAL;
-    scbie_i = riscv::CBIE_INVAL;
-    hcbie_i = riscv::CBIE_INVAL;
+    mcbie_i = cva6dx_riscv_pkg::CBIE_INVAL;
+    scbie_i = cva6dx_riscv_pkg::CBIE_INVAL;
+    hcbie_i = cva6dx_riscv_pkg::CBIE_INVAL;
     mcbcfe_i = 1'b1;
     scbcfe_i = 1'b1;
     hcbcfe_i = 1'b1;
@@ -254,92 +254,92 @@ module zicbom_permissions_test;
     #1;
 
     // HU must not turn ordinary host U-mode into VU.
-    run_case("host U ignores HU for INVAL", CBO_INVAL_INSN, riscv::PRIV_LVL_U, 1'b0, 1'b1,
-             riscv::CBIE_INVAL, riscv::CBIE_INVAL, riscv::CBIE_INVAL, 1'b1, 1'b1, 1'b1, 1'b0, '0,
-             ariane_pkg::CBO_INVAL);
+    run_case("host U ignores HU for INVAL", CBO_INVAL_INSN, cva6dx_riscv_pkg::PRIV_LVL_U, 1'b0, 1'b1,
+             cva6dx_riscv_pkg::CBIE_INVAL, cva6dx_riscv_pkg::CBIE_INVAL, cva6dx_riscv_pkg::CBIE_INVAL, 1'b1, 1'b1, 1'b1, 1'b0, '0,
+             cva6dx_pkg::CBO_INVAL);
 
     // VU + senvcfg.CBIE=00 -> virtual-instruction.
-    run_case("VU sCBIE illegal is virtual", CBO_INVAL_INSN, riscv::PRIV_LVL_U, 1'b1, 1'b0,
-             riscv::CBIE_INVAL, riscv::CBIE_ILLEGAL, riscv::CBIE_INVAL, 1'b1, 1'b1, 1'b1, 1'b1,
-             riscv::VIRTUAL_INSTRUCTION, ariane_pkg::CBO_INVAL);
+    run_case("VU sCBIE illegal is virtual", CBO_INVAL_INSN, cva6dx_riscv_pkg::PRIV_LVL_U, 1'b1, 1'b0,
+             cva6dx_riscv_pkg::CBIE_INVAL, cva6dx_riscv_pkg::CBIE_ILLEGAL, cva6dx_riscv_pkg::CBIE_INVAL, 1'b1, 1'b1, 1'b1, 1'b1,
+             cva6dx_riscv_pkg::VIRTUAL_INSTRUCTION, cva6dx_pkg::CBO_INVAL);
 
     // VS + henvcfg.CBIE=00 -> virtual-instruction.
-    run_case("VS hCBIE illegal is virtual", CBO_INVAL_INSN, riscv::PRIV_LVL_S, 1'b1, 1'b0,
-             riscv::CBIE_INVAL, riscv::CBIE_INVAL, riscv::CBIE_ILLEGAL, 1'b1, 1'b1, 1'b1, 1'b1,
-             riscv::VIRTUAL_INSTRUCTION, ariane_pkg::CBO_INVAL);
+    run_case("VS hCBIE illegal is virtual", CBO_INVAL_INSN, cva6dx_riscv_pkg::PRIV_LVL_S, 1'b1, 1'b0,
+             cva6dx_riscv_pkg::CBIE_INVAL, cva6dx_riscv_pkg::CBIE_INVAL, cva6dx_riscv_pkg::CBIE_ILLEGAL, 1'b1, 1'b1, 1'b1, 1'b1,
+             cva6dx_riscv_pkg::VIRTUAL_INSTRUCTION, cva6dx_pkg::CBO_INVAL);
 
     // VU + henvcfg.CBIE=00 -> virtual-instruction.
-    run_case("VU hCBIE illegal is virtual", CBO_INVAL_INSN, riscv::PRIV_LVL_U, 1'b1, 1'b0,
-             riscv::CBIE_INVAL, riscv::CBIE_INVAL, riscv::CBIE_ILLEGAL, 1'b1, 1'b1, 1'b1, 1'b1,
-             riscv::VIRTUAL_INSTRUCTION, ariane_pkg::CBO_INVAL);
+    run_case("VU hCBIE illegal is virtual", CBO_INVAL_INSN, cva6dx_riscv_pkg::PRIV_LVL_U, 1'b1, 1'b0,
+             cva6dx_riscv_pkg::CBIE_INVAL, cva6dx_riscv_pkg::CBIE_INVAL, cva6dx_riscv_pkg::CBIE_ILLEGAL, 1'b1, 1'b1, 1'b1, 1'b1,
+             cva6dx_riscv_pkg::VIRTUAL_INSTRUCTION, cva6dx_pkg::CBO_INVAL);
 
     // henvcfg does not govern HS execution.
-    run_case("HS ignores hCBIE", CBO_INVAL_INSN, riscv::PRIV_LVL_S, 1'b0, 1'b0, riscv::CBIE_INVAL,
-             riscv::CBIE_INVAL, riscv::CBIE_ILLEGAL, 1'b1, 1'b1, 1'b1, 1'b0, '0,
-             ariane_pkg::CBO_INVAL);
+    run_case("HS ignores hCBIE", CBO_INVAL_INSN, cva6dx_riscv_pkg::PRIV_LVL_S, 1'b0, 1'b0, cva6dx_riscv_pkg::CBIE_INVAL,
+             cva6dx_riscv_pkg::CBIE_INVAL, cva6dx_riscv_pkg::CBIE_ILLEGAL, 1'b1, 1'b1, 1'b1, 1'b0, '0,
+             cva6dx_pkg::CBO_INVAL);
 
     // VS henvcfg.CBIE=01 performs a flush.
-    run_case("VS hCBIE flush", CBO_INVAL_INSN, riscv::PRIV_LVL_S, 1'b1, 1'b0, riscv::CBIE_INVAL,
-             riscv::CBIE_INVAL, riscv::CBIE_FLUSH, 1'b1, 1'b1, 1'b1, 1'b0, '0,
-             ariane_pkg::CBO_FLUSH);
+    run_case("VS hCBIE flush", CBO_INVAL_INSN, cva6dx_riscv_pkg::PRIV_LVL_S, 1'b1, 1'b0, cva6dx_riscv_pkg::CBIE_INVAL,
+             cva6dx_riscv_pkg::CBIE_INVAL, cva6dx_riscv_pkg::CBIE_FLUSH, 1'b1, 1'b1, 1'b1, 1'b0, '0,
+             cva6dx_pkg::CBO_FLUSH);
 
     // VU senvcfg.CBIE=01 performs a flush.
-    run_case("VU sCBIE flush", CBO_INVAL_INSN, riscv::PRIV_LVL_U, 1'b1, 1'b0, riscv::CBIE_INVAL,
-             riscv::CBIE_FLUSH, riscv::CBIE_INVAL, 1'b1, 1'b1, 1'b1, 1'b0, '0,
-             ariane_pkg::CBO_FLUSH);
+    run_case("VU sCBIE flush", CBO_INVAL_INSN, cva6dx_riscv_pkg::PRIV_LVL_U, 1'b1, 1'b0, cva6dx_riscv_pkg::CBIE_INVAL,
+             cva6dx_riscv_pkg::CBIE_FLUSH, cva6dx_riscv_pkg::CBIE_INVAL, 1'b1, 1'b1, 1'b1, 1'b0, '0,
+             cva6dx_pkg::CBO_FLUSH);
 
     // VU henvcfg.CBIE=01 performs a flush.
-    run_case("VU hCBIE flush", CBO_INVAL_INSN, riscv::PRIV_LVL_U, 1'b1, 1'b0, riscv::CBIE_INVAL,
-             riscv::CBIE_INVAL, riscv::CBIE_FLUSH, 1'b1, 1'b1, 1'b1, 1'b0, '0,
-             ariane_pkg::CBO_FLUSH);
+    run_case("VU hCBIE flush", CBO_INVAL_INSN, cva6dx_riscv_pkg::PRIV_LVL_U, 1'b1, 1'b0, cva6dx_riscv_pkg::CBIE_INVAL,
+             cva6dx_riscv_pkg::CBIE_INVAL, cva6dx_riscv_pkg::CBIE_FLUSH, 1'b1, 1'b1, 1'b1, 1'b0, '0,
+             cva6dx_pkg::CBO_FLUSH);
 
     // VS CBO.CLEAN with henvcfg.CBCFE=0 -> virtual-instruction.
-    run_case("VS CLEAN hCBCFE disabled", CBO_CLEAN_INSN, riscv::PRIV_LVL_S, 1'b1, 1'b0,
-             riscv::CBIE_INVAL, riscv::CBIE_INVAL, riscv::CBIE_INVAL, 1'b1, 1'b1, 1'b0, 1'b1,
-             riscv::VIRTUAL_INSTRUCTION, ariane_pkg::CBO_CLEAN);
+    run_case("VS CLEAN hCBCFE disabled", CBO_CLEAN_INSN, cva6dx_riscv_pkg::PRIV_LVL_S, 1'b1, 1'b0,
+             cva6dx_riscv_pkg::CBIE_INVAL, cva6dx_riscv_pkg::CBIE_INVAL, cva6dx_riscv_pkg::CBIE_INVAL, 1'b1, 1'b1, 1'b0, 1'b1,
+             cva6dx_riscv_pkg::VIRTUAL_INSTRUCTION, cva6dx_pkg::CBO_CLEAN);
 
     // VU requires both henvcfg.CBCFE and senvcfg.CBCFE.
-    run_case("VU FLUSH hCBCFE disabled", CBO_FLUSH_INSN, riscv::PRIV_LVL_U, 1'b1, 1'b0,
-             riscv::CBIE_INVAL, riscv::CBIE_INVAL, riscv::CBIE_INVAL, 1'b1, 1'b1, 1'b0, 1'b1,
-             riscv::VIRTUAL_INSTRUCTION, ariane_pkg::CBO_FLUSH);
+    run_case("VU FLUSH hCBCFE disabled", CBO_FLUSH_INSN, cva6dx_riscv_pkg::PRIV_LVL_U, 1'b1, 1'b0,
+             cva6dx_riscv_pkg::CBIE_INVAL, cva6dx_riscv_pkg::CBIE_INVAL, cva6dx_riscv_pkg::CBIE_INVAL, 1'b1, 1'b1, 1'b0, 1'b1,
+             cva6dx_riscv_pkg::VIRTUAL_INSTRUCTION, cva6dx_pkg::CBO_FLUSH);
 
-    run_case("VU FLUSH sCBCFE disabled", CBO_FLUSH_INSN, riscv::PRIV_LVL_U, 1'b1, 1'b0,
-             riscv::CBIE_INVAL, riscv::CBIE_INVAL, riscv::CBIE_INVAL, 1'b1, 1'b0, 1'b1, 1'b1,
-             riscv::VIRTUAL_INSTRUCTION, ariane_pkg::CBO_FLUSH);
+    run_case("VU FLUSH sCBCFE disabled", CBO_FLUSH_INSN, cva6dx_riscv_pkg::PRIV_LVL_U, 1'b1, 1'b0,
+             cva6dx_riscv_pkg::CBIE_INVAL, cva6dx_riscv_pkg::CBIE_INVAL, cva6dx_riscv_pkg::CBIE_INVAL, 1'b1, 1'b0, 1'b1, 1'b1,
+             cva6dx_riscv_pkg::VIRTUAL_INSTRUCTION, cva6dx_pkg::CBO_FLUSH);
 
     // Ordinary host U still gets cause 2 from senvcfg.CBCFE.
-    run_case("host U CLEAN sCBCFE disabled", CBO_CLEAN_INSN, riscv::PRIV_LVL_U, 1'b0, 1'b0,
-             riscv::CBIE_INVAL, riscv::CBIE_INVAL, riscv::CBIE_INVAL, 1'b1, 1'b0, 1'b1, 1'b1,
-             riscv::ILLEGAL_INSTR, ariane_pkg::CBO_CLEAN);
+    run_case("host U CLEAN sCBCFE disabled", CBO_CLEAN_INSN, cva6dx_riscv_pkg::PRIV_LVL_U, 1'b0, 1'b0,
+             cva6dx_riscv_pkg::CBIE_INVAL, cva6dx_riscv_pkg::CBIE_INVAL, cva6dx_riscv_pkg::CBIE_INVAL, 1'b1, 1'b0, 1'b1, 1'b1,
+             cva6dx_riscv_pkg::ILLEGAL_INSTR, cva6dx_pkg::CBO_CLEAN);
 
     // An INVAL converted to FLUSH by CBIE must not be rejected by CBCFE.
-    run_case("S INVAL-as-FLUSH ignores mCBCFE", CBO_INVAL_INSN, riscv::PRIV_LVL_S, 1'b0, 1'b0,
-             riscv::CBIE_FLUSH, riscv::CBIE_INVAL, riscv::CBIE_INVAL, 1'b0, 1'b1, 1'b1, 1'b0, '0,
-             ariane_pkg::CBO_FLUSH);
+    run_case("S INVAL-as-FLUSH ignores mCBCFE", CBO_INVAL_INSN, cva6dx_riscv_pkg::PRIV_LVL_S, 1'b0, 1'b0,
+             cva6dx_riscv_pkg::CBIE_FLUSH, cva6dx_riscv_pkg::CBIE_INVAL, cva6dx_riscv_pkg::CBIE_INVAL, 1'b0, 1'b1, 1'b1, 1'b0, '0,
+             cva6dx_pkg::CBO_FLUSH);
 
-    run_case("U INVAL-as-FLUSH ignores sCBCFE", CBO_INVAL_INSN, riscv::PRIV_LVL_U, 1'b0, 1'b0,
-             riscv::CBIE_INVAL, riscv::CBIE_FLUSH, riscv::CBIE_INVAL, 1'b1, 1'b0, 1'b1, 1'b0, '0,
-             ariane_pkg::CBO_FLUSH);
+    run_case("U INVAL-as-FLUSH ignores sCBCFE", CBO_INVAL_INSN, cva6dx_riscv_pkg::PRIV_LVL_U, 1'b0, 1'b0,
+             cva6dx_riscv_pkg::CBIE_INVAL, cva6dx_riscv_pkg::CBIE_FLUSH, cva6dx_riscv_pkg::CBIE_INVAL, 1'b1, 1'b0, 1'b1, 1'b0, '0,
+             cva6dx_pkg::CBO_FLUSH);
 
     // Genuine FLUSH remains governed by CBCFE.
-    run_case("S genuine FLUSH obeys mCBCFE", CBO_FLUSH_INSN, riscv::PRIV_LVL_S, 1'b0, 1'b0,
-             riscv::CBIE_INVAL, riscv::CBIE_INVAL, riscv::CBIE_INVAL, 1'b0, 1'b1, 1'b1, 1'b1,
-             riscv::ILLEGAL_INSTR, ariane_pkg::CBO_FLUSH);
+    run_case("S genuine FLUSH obeys mCBCFE", CBO_FLUSH_INSN, cva6dx_riscv_pkg::PRIV_LVL_S, 1'b0, 1'b0,
+             cva6dx_riscv_pkg::CBIE_INVAL, cva6dx_riscv_pkg::CBIE_INVAL, cva6dx_riscv_pkg::CBIE_INVAL, 1'b0, 1'b1, 1'b1, 1'b1,
+             cva6dx_riscv_pkg::ILLEGAL_INSTR, cva6dx_pkg::CBO_FLUSH);
 
-    run_case("U genuine FLUSH obeys sCBCFE", CBO_FLUSH_INSN, riscv::PRIV_LVL_U, 1'b0, 1'b0,
-             riscv::CBIE_INVAL, riscv::CBIE_INVAL, riscv::CBIE_INVAL, 1'b1, 1'b0, 1'b1, 1'b1,
-             riscv::ILLEGAL_INSTR, ariane_pkg::CBO_FLUSH);
+    run_case("U genuine FLUSH obeys sCBCFE", CBO_FLUSH_INSN, cva6dx_riscv_pkg::PRIV_LVL_U, 1'b0, 1'b0,
+             cva6dx_riscv_pkg::CBIE_INVAL, cva6dx_riscv_pkg::CBIE_INVAL, cva6dx_riscv_pkg::CBIE_INVAL, 1'b1, 1'b0, 1'b1, 1'b1,
+             cva6dx_riscv_pkg::ILLEGAL_INSTR, cva6dx_pkg::CBO_FLUSH);
 
     // menvcfg checks have higher priority and still produce cause 2
     // even while V=1.
-    run_case("guest mCBIE illegal remains illegal", CBO_INVAL_INSN, riscv::PRIV_LVL_S, 1'b1, 1'b0,
-             riscv::CBIE_ILLEGAL, riscv::CBIE_INVAL, riscv::CBIE_INVAL, 1'b1, 1'b1, 1'b1, 1'b1,
-             riscv::ILLEGAL_INSTR, ariane_pkg::CBO_INVAL);
+    run_case("guest mCBIE illegal remains illegal", CBO_INVAL_INSN, cva6dx_riscv_pkg::PRIV_LVL_S, 1'b1, 1'b0,
+             cva6dx_riscv_pkg::CBIE_ILLEGAL, cva6dx_riscv_pkg::CBIE_INVAL, cva6dx_riscv_pkg::CBIE_INVAL, 1'b1, 1'b1, 1'b1, 1'b1,
+             cva6dx_riscv_pkg::ILLEGAL_INSTR, cva6dx_pkg::CBO_INVAL);
 
     // HU must likewise not make host U subject to henvcfg.CBCFE.
-    run_case("host U ignores HU for CBCFE", CBO_CLEAN_INSN, riscv::PRIV_LVL_U, 1'b0, 1'b1,
-             riscv::CBIE_INVAL, riscv::CBIE_INVAL, riscv::CBIE_INVAL, 1'b1, 1'b1, 1'b0, 1'b0, '0,
-             ariane_pkg::CBO_CLEAN);
+    run_case("host U ignores HU for CBCFE", CBO_CLEAN_INSN, cva6dx_riscv_pkg::PRIV_LVL_U, 1'b0, 1'b1,
+             cva6dx_riscv_pkg::CBIE_INVAL, cva6dx_riscv_pkg::CBIE_INVAL, cva6dx_riscv_pkg::CBIE_INVAL, 1'b1, 1'b1, 1'b0, 1'b0, '0,
+             cva6dx_pkg::CBO_CLEAN);
 
     if (errors != 0) begin
       $fatal(1, "FAIL: %0d Zicbom permission checks failed", errors);

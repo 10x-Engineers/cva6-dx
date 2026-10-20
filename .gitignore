@@ -42,7 +42,7 @@ tb/riscv-isa-sim/
 work-*/*
 install/
 xrun_results/
-/core/include/hwconfig_config_pkg.sv
+/design/cfg/hwconfig_config_pkg.sv
 __pycache__
 .bender/
 Bender.lock

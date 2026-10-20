@@ -5,7 +5,7 @@
 #-----------------------------------------------------------------------------
 #
 # Reproducer for the HLVX permission rule being applied to the G-stage check
-# on a VS-stage page-table read (core/cva6_mmu/cva6_ptw.sv, data-path
+# on a VS-stage page-table read (design/mmu/cva6dx_ptw.sv, data-path
 # permission test).
 #
 # During a two-stage walk, when the PTW is at G_INTERMED_STAGE it is

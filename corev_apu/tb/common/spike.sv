@@ -19,11 +19,11 @@
 `include "uvm_macros.svh"
 `endif
 
-import ariane_pkg::*;
+import cva6dx_pkg::*;
 `ifndef VERILATOR
 import uvm_pkg::*;
 `endif
-import riscv::*;
+import cva6dx_riscv_pkg::*;
 import uvma_rvfi_pkg::*;
 import uvma_core_cntrl_pkg::*;
 import uvmc_rvfi_reference_model_pkg::*;

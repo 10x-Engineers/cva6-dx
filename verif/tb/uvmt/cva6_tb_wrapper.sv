@@ -100,7 +100,7 @@ module cva6_tb_wrapper import uvmt_cva6_pkg::*; #(
   cvxif_req_t  cvxif_req;
   cvxif_resp_t cvxif_resp;
 
-  cva6 #(
+  cva6dx_core #(
      .CVA6Cfg ( CVA6Cfg ),
      .rvfi_probes_instr_t  ( rvfi_probes_instr_t ),
      .rvfi_probes_csr_t    ( rvfi_probes_csr_t   ),
@@ -125,7 +125,7 @@ module cva6_tb_wrapper import uvmt_cva6_pkg::*; #(
   // RVFI
   //----------------------------------------------------------------------------
 
-  cva6_rvfi #(
+  cva6dx_rvfi #(
       .CVA6Cfg   (CVA6Cfg),
       .rvfi_instr_t(rvfi_instr_t),
       .rvfi_csr_t(rvfi_csr_t),

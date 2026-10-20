@@ -16,7 +16,7 @@
      iti_pkg::itype_t [Cfg.NrCommitPorts-1:0] itype; \
      logic [iti_pkg::CAUSE_LEN-1:0] cause; \
      logic [Cfg.XLEN-1:0] tval; \
-     riscv::priv_lvl_t  priv; \
+     cva6dx_riscv_pkg::priv_lvl_t  priv; \
      logic [Cfg.NrCommitPorts-1:0][Cfg.XLEN-1:0] iaddr; \
      logic [63:0] cycles; \
   }

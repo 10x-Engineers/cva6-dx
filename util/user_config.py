@@ -255,7 +255,7 @@ def write_file(path, lines):
 if __name__ == "__main__":
     base, changes = parse_derive_args(sys.argv[1:])
 
-    input_file = f"core/include/{base}_config_pkg.sv"
-    output_file = "core/include/gen_config_pkg.sv"
+    input_file = f"design/cfg/{base}_config_pkg.sv"
+    output_file = "design/cfg/gen_config_pkg.sv"
 
     derive_config(input_file, output_file, changes)

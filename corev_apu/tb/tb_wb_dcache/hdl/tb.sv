@@ -17,7 +17,7 @@
 `include "assign.svh"
 `include "axi/typedef.svh"
 
-module tb import ariane_pkg::*; import std_cache_pkg::*; import tb_pkg::*; #(
+module tb import cva6dx_pkg::*; import cva6dx_std_cache_pkg::*; import tb_pkg::*; #(
   // CVA6 config
   parameter config_pkg::cva6_cfg_t CVA6Cfg = build_config_pkg::build_config(
     cva6_config_pkg::cva6_cfg
@@ -418,7 +418,7 @@ module tb import ariane_pkg::*; import std_cache_pkg::*; import tb_pkg::*; #(
 // MUT
 ///////////////////////////////////////////////////////////////////////////////
 
-  std_nbdcache  #(
+  cva6dx_std_nbdcache  #(
     .CVA6Cfg        ( CVA6Cfg             ),
     .dcache_req_i_t ( dcache_req_i_t      ),
     .dcache_req_o_t ( dcache_req_o_t      ),

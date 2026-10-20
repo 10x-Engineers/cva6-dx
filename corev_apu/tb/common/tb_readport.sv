@@ -19,7 +19,7 @@
 
 
 
-program tb_readport  import tb_pkg::*; import ariane_pkg::*; #(
+program tb_readport  import tb_pkg::*; import cva6dx_pkg::*; #(
   parameter config_pkg::cva6_cfg_t CVA6Cfg = config_pkg::cva6_cfg_empty,
   parameter string       PortName      = "read port 0",
   parameter              FlushRate     = 1,

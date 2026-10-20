@@ -27,7 +27,7 @@ module itype_detector #(
     input  logic             valid_i,
     input  logic             exception_i,
     input  logic             interrupt_i,
-    input  ariane_pkg::fu_op op_i,
+    input  cva6dx_pkg::fu_op op_i,
     input  logic             branch_taken_i,
     output iti_pkg::itype_t  itype_o
 );
@@ -47,25 +47,25 @@ module itype_detector #(
 
 
 
-  assign eret = op_i inside {ariane_pkg::MRET, ariane_pkg::SRET, ariane_pkg::DRET};
+  assign eret = op_i inside {cva6dx_pkg::MRET, cva6dx_pkg::SRET, cva6dx_pkg::DRET};
 
-  assign nontaken_branch = (  op_i == ariane_pkg::EQ ||
-                                op_i == ariane_pkg::NE ||
-                                op_i == ariane_pkg::LTS ||
-                                op_i == ariane_pkg::GES ||
-                                op_i == ariane_pkg::LTU ||
-                                op_i == ariane_pkg::GEU) &&
+  assign nontaken_branch = (  op_i == cva6dx_pkg::EQ ||
+                                op_i == cva6dx_pkg::NE ||
+                                op_i == cva6dx_pkg::LTS ||
+                                op_i == cva6dx_pkg::GES ||
+                                op_i == cva6dx_pkg::LTU ||
+                                op_i == cva6dx_pkg::GEU) &&
                                  ~branch_taken_i;
 
-  assign taken_branch = ( op_i == ariane_pkg::EQ ||
-                            op_i == ariane_pkg::NE ||
-                            op_i == ariane_pkg::LTS ||
-                            op_i == ariane_pkg::GES ||
-                            op_i == ariane_pkg::LTU ||
-                            op_i == ariane_pkg::GEU) &&
+  assign taken_branch = ( op_i == cva6dx_pkg::EQ ||
+                            op_i == cva6dx_pkg::NE ||
+                            op_i == cva6dx_pkg::LTS ||
+                            op_i == cva6dx_pkg::GES ||
+                            op_i == cva6dx_pkg::LTU ||
+                            op_i == cva6dx_pkg::GEU) &&
                             branch_taken_i;
 
-  assign updiscon = op_i == ariane_pkg::JALR;
+  assign updiscon = op_i == cva6dx_pkg::JALR;
 
   // assigning the itype
   always_comb begin

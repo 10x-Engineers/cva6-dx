@@ -20,9 +20,9 @@ ifndef TARGET_CFG
 export TARGET_CFG = $(target)
 endif
 
-HPDCACHE_DIR ?= $(CVA6_REPO_DIR)/core/cache_subsystem/hpdcache
+HPDCACHE_DIR ?= $(CVA6_REPO_DIR)/ip/hpdcache
 export HPDCACHE_DIR
-HPDCACHE_TARGET_CFG ?= ${CVA6_REPO_DIR}/core/include/cva6_hpdcache_default_config_pkg.sv
+HPDCACHE_TARGET_CFG ?= ${CVA6_REPO_DIR}/design/cfg/cva6_hpdcache_default_config_pkg.sv
 export HPDCACHE_TARGET_CFG
 
 .DEFAULT_GOAL := help
@@ -32,7 +32,7 @@ FLIST_TB   := $(CVA6_TB_DIR)/Flist.cva6_tb
 # target takes one of the following cva6 hardware configuration:
 # cv64a6_imafdc_sv39, cv32a6_imac_sv0, cv32a6_imac_sv32, cv32a6_imafc_sv32
 target     ?= cv64a6_imafdc_sv39
-FLIST_CORE = $(if $(gate),$(CVA6_REPO_DIR)/core/Flist.cva6_gate,$(CVA6_REPO_DIR)/core/Flist.cva6)
+FLIST_CORE = $(if $(gate),$(CVA6_REPO_DIR)/design/cva6dx_core_gate.f,$(CVA6_REPO_DIR)/design/cva6dx_core.f)
 th_top_level      := $(if $(gate),ariane_gate_tb,ariane_tb)
 do_file           := $(if $(gate),init_gate,init_testharness)
 TRACE_FAST      ?=

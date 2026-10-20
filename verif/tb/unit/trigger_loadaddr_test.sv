@@ -39,7 +39,7 @@ module trigger_loadaddr_test;
 
   always #1 clk = !clk;
 
-  trigger_module #(
+  cva6dx_trigger_module #(
       .CVA6Cfg(TestCfg),
       .exception_t(exception_t)
   ) dut (
@@ -47,7 +47,7 @@ module trigger_loadaddr_test;
       .rst_ni(rst_n),
       .commit_ack_i('0),
       .ex_i('0),
-      .priv_lvl_i(riscv::PRIV_LVL_M),
+      .priv_lvl_i(cva6dx_riscv_pkg::PRIV_LVL_M),
       .debug_mode_i(1'b0),
       .mret_i(1'b0),
       .sret_i(1'b0),
@@ -136,7 +136,7 @@ module trigger_loadaddr_test;
 
     assert (trigger_cancel)
       else $fatal(1, "LoadAddr match did not produce cancel");
-    assert (trigger_action == riscv::BREAKPOINT)
+    assert (trigger_action == cva6dx_riscv_pkg::BREAKPOINT)
       else $fatal(1, "cancel used an unrelated trigger action");
 
     lsu_valid = 0;

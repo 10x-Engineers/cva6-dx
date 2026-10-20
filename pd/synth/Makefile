@@ -8,7 +8,7 @@
 # Original Author: Jean-Roch COULON - Thales
 #
 
-DESIGN_NAME          ?= cva6
+DESIGN_NAME          ?= cva6dx_core
 PERIOD               ?= 17
 FOUNDRY_PATH         ?=
 LOCAL_LIB_PATH       ?=/shares/common/tools/RAMs/
@@ -33,8 +33,8 @@ endif
 #	- hpdcache_params_pkg.sv before hdpcache_pkg.sv
 #	- pkg before rtl
 pre_cva6_synth:
-	grep "{\w*}" ../../core/Flist.cva6|grep -v "instr_tracer"|grep -v "incdir"|grep -v "hpdcache.Flist" > Flist.cva6_synth
-	grep "{\w*}" ../../core/cache_subsystem/hpdcache/rtl/hpdcache.Flist|grep -v "incdir" >> Flist.cva6_synth
+	grep "{\w*}" ../../design/cva6dx_core.f|grep -v "instr_tracer"|grep -v "incdir"|grep -v "hpdcache.Flist" > Flist.cva6_synth
+	grep "{\w*}" ../../ip/hpdcache/rtl/hpdcache.Flist|grep -v "incdir" >> Flist.cva6_synth
 	grep "hpdcache_pkg.sv" Flist.cva6_synth > hpdcache_pkg.tmp
 	grep "_pkg.sv" Flist.cva6_synth | grep -v "hpdcache_pkg.sv" > packages.tmp
 	grep -v "hpdcache_pkg.sv" Flist.cva6_synth | grep -v "HPDCACHE_TARGET_CFG" | grep -v "_pkg.sv" > rtl.tmp

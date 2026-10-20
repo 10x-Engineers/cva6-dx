@@ -14,7 +14,7 @@
 //              the virtual interfaces and starts the test passed by +UVM_TEST+
 
 
-import ariane_pkg::*;
+import cva6dx_pkg::*;
 import uvm_pkg::*;
 
 `include "uvm_macros.svh"

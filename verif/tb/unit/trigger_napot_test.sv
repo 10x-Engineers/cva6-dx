@@ -1,5 +1,5 @@
 module trigger_napot_test;
-  import triggers_pkg::*;
+  import cva6dx_triggers_pkg::*;
 
   initial begin
     assert (napot_match32(32'h0000_0017, 32'h0000_0010));

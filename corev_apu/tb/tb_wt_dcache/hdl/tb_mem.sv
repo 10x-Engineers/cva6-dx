@@ -18,7 +18,7 @@
 
 
 
-module tb_mem import tb_pkg::*; import ariane_pkg::*; import wt_cache_pkg::*;#(
+module tb_mem import tb_pkg::*; import cva6dx_pkg::*; import cva6dx_wt_cache_pkg::*;#(
   parameter string MemName             = "TB_MEM",
   parameter MemRandHitRate             = 10, //in percent
   parameter MemRandInvRate             = 5,  //in percent

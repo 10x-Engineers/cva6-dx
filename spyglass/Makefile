@@ -12,7 +12,7 @@
 ## Define variables
 
 # Top design
-TOP= cva6
+TOP= cva6dx_core
 
 # root path
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
@@ -30,11 +30,11 @@ ifndef DV_TARGET
 $(error must set DV_TARGET to indicate CVA6 target to use)
 endif
 
-HPDCACHE_DIR=${CVA6_REPO_DIR}/core/cache_subsystem/hpdcache/
+HPDCACHE_DIR=${CVA6_REPO_DIR}/ip/hpdcache/
 
-HPDCACHE_TARGET_CFG=${CVA6_REPO_DIR}/core/include/cva6_hpdcache_default_config_pkg.sv
+HPDCACHE_TARGET_CFG=${CVA6_REPO_DIR}/design/cfg/cva6_hpdcache_default_config_pkg.sv
 
-FLIST_CVA6=${CVA6_REPO_DIR}/core/Flist.cva6
+FLIST_CVA6=${CVA6_REPO_DIR}/design/cva6dx_core.f
 
 # Export List
 EXPORT_LIST= CVA6_REPO_DIR=$(CVA6_REPO_DIR) TARGET_CFG=$(DV_TARGET) HPDCACHE_TARGET_CFG=$(HPDCACHE_TARGET_CFG) HPDCACHE_DIR=$(HPDCACHE_DIR)

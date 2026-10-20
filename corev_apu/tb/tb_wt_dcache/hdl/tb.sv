@@ -25,7 +25,7 @@
 
 
 
-module tb import tb_pkg::*; import ariane_pkg::*; import wt_cache_pkg::*; #()();
+module tb import tb_pkg::*; import cva6dx_pkg::*; import cva6dx_wt_cache_pkg::*; #()();
 
   // leave this
   timeunit 1ps;
@@ -201,8 +201,8 @@ module tb import tb_pkg::*; import ariane_pkg::*; import wt_cache_pkg::*; #()();
 // MUT
 ///////////////////////////////////////////////////////////////////////////////
 
-  wt_dcache  #(
-    .CVA6Cfg ( ariane_pkg::CVA6DefaultCfg )
+  cva6dx_wt_dcache  #(
+    .CVA6Cfg ( cva6dx_pkg::CVA6DefaultCfg )
   ) i_dut (
     .clk_i           ( clk_i           ),
     .rst_ni          ( rst_ni          ),

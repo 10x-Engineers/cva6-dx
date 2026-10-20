@@ -11,7 +11,7 @@ mkdir -p -- "$1"
 build_dir=$(cd -- "$1" && pwd)
 baseline_ref=$2
 baseline_dir=$(mktemp -d "$build_dir/baseline-source.XXXXXX")
-git -C "$repo_dir" show "$baseline_ref:core/csr_regfile.sv" > "$baseline_dir/csr_regfile.sv"
+git -C "$repo_dir" show "$baseline_ref:design/csr/cva6dx_csr_regfile.sv" > "$baseline_dir/csr_regfile.sv"
 printf 'Baseline commit: %s\n' "$(git -C "$repo_dir" rev-parse "$baseline_ref^{commit}")"
 printf 'Build logs: %s\n' "$build_dir"
 printf 'Building and running the pre-fix CSR module (one build job)...\n'

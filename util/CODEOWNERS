@@ -4,8 +4,8 @@
 # Core
 
 core/mmu_sv39 @sjthales
-core/cvxif_example @Gchauvon
-core/cvxif_fu.sv @Gchauvon
+examples/cvxif @Gchauvon
+design/cvxif/cva6dx_cvxif_fu.sv @Gchauvon
 
 # APU
 

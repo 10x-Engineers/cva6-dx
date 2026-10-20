@@ -1,7 +1,7 @@
 `include "rvfi_types.svh"
 
 module mstatus_wpri_test;
-  import ariane_pkg::*;
+  import cva6dx_pkg::*;
 
   localparam config_pkg::cva6_cfg_t CVA6Cfg = build_config_pkg::build_config(
     cva6_config_pkg::cva6_cfg
@@ -57,7 +57,7 @@ module mstatus_wpri_test;
 
   always #1 clk_i = ~clk_i;
 
-  csr_regfile #(
+  cva6dx_csr_regfile #(
     .CVA6Cfg(CVA6Cfg),
     .exception_t(exception_t),
     .jvt_t(jvt_t),
@@ -84,7 +84,7 @@ module mstatus_wpri_test;
     commit_ack_i = '0;
     ex_i = '0;
     csr_op_i = CSR_READ;
-    csr_addr_i = riscv::CSR_MSTATUS;
+    csr_addr_i = cva6dx_riscv_pkg::CSR_MSTATUS;
     csr_wdata_i = '0;
 
     #3;

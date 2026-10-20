@@ -30,27 +30,27 @@ class ex_trace_item #(
         this.cause = cause;
 
         case (cause)
-            riscv::INSTR_ADDR_MISALIGNED: this.cause_s = "Instruction Address Misaligned";
-            riscv::INSTR_ACCESS_FAULT:    this.cause_s = "Instruction Access Fault";
-            riscv::ILLEGAL_INSTR:         this.cause_s = "Illegal Instruction";
-            riscv::BREAKPOINT:            this.cause_s = "Breakpoint";
-            riscv::LD_ADDR_MISALIGNED:    this.cause_s = "Load Address Misaligned";
-            riscv::LD_ACCESS_FAULT:       this.cause_s = "Load Access Fault";
-            riscv::ST_ADDR_MISALIGNED:    this.cause_s = "Store Address Misaligned";
-            riscv::ST_ACCESS_FAULT:       this.cause_s = "Store Access Fault";
-            riscv::ENV_CALL_UMODE:        this.cause_s = "Environment Call User Mode";
-            riscv::ENV_CALL_SMODE:        this.cause_s = "Environment Call Supervisor Mode";
-            riscv::ENV_CALL_MMODE:        this.cause_s = "Environment Call Machine Mode";
-            riscv::INSTR_PAGE_FAULT:      this.cause_s = "Instruction Page Fault";
-            riscv::LOAD_PAGE_FAULT:       this.cause_s = "Load Page Fault";
-            riscv::STORE_PAGE_FAULT:      this.cause_s = "Store Page Fault";
+            cva6dx_riscv_pkg::INSTR_ADDR_MISALIGNED: this.cause_s = "Instruction Address Misaligned";
+            cva6dx_riscv_pkg::INSTR_ACCESS_FAULT:    this.cause_s = "Instruction Access Fault";
+            cva6dx_riscv_pkg::ILLEGAL_INSTR:         this.cause_s = "Illegal Instruction";
+            cva6dx_riscv_pkg::BREAKPOINT:            this.cause_s = "Breakpoint";
+            cva6dx_riscv_pkg::LD_ADDR_MISALIGNED:    this.cause_s = "Load Address Misaligned";
+            cva6dx_riscv_pkg::LD_ACCESS_FAULT:       this.cause_s = "Load Access Fault";
+            cva6dx_riscv_pkg::ST_ADDR_MISALIGNED:    this.cause_s = "Store Address Misaligned";
+            cva6dx_riscv_pkg::ST_ACCESS_FAULT:       this.cause_s = "Store Access Fault";
+            cva6dx_riscv_pkg::ENV_CALL_UMODE:        this.cause_s = "Environment Call User Mode";
+            cva6dx_riscv_pkg::ENV_CALL_SMODE:        this.cause_s = "Environment Call Supervisor Mode";
+            cva6dx_riscv_pkg::ENV_CALL_MMODE:        this.cause_s = "Environment Call Machine Mode";
+            cva6dx_riscv_pkg::INSTR_PAGE_FAULT:      this.cause_s = "Instruction Page Fault";
+            cva6dx_riscv_pkg::LOAD_PAGE_FAULT:       this.cause_s = "Load Page Fault";
+            cva6dx_riscv_pkg::STORE_PAGE_FAULT:      this.cause_s = "Store Page Fault";
             INTERRUPTS.S_SW:              this.cause_s = "Supervisor Software Interrupt";
             INTERRUPTS.M_SW:              this.cause_s = "Machine Software Interrupt";
             INTERRUPTS.S_TIMER:           this.cause_s = "Supervisor Timer Interrupt";
             INTERRUPTS.M_TIMER:           this.cause_s = "Machine Timer Interrupt";
             INTERRUPTS.S_EXT:             this.cause_s = "Supervisor External Interrupt";
             INTERRUPTS.M_EXT:             this.cause_s = "Machine External Interrupt";
-            riscv::DEBUG_REQUEST:         this.cause_s = "Request Debug Mode";
+            cva6dx_riscv_pkg::DEBUG_REQUEST:         this.cause_s = "Request Debug Mode";
             default: this.cause_s = "Interrupt";
         endcase
 
@@ -63,9 +63,9 @@ class ex_trace_item #(
         s = $sformatf("Exception @%10t, PC: %h, Cause: %s", $time, this.pc, this.cause_s);
         // write out tval if it wasn't an environment call or interrupt, in that case the tval field has no meaning
         if (!(this.cause inside {
-                riscv::ENV_CALL_MMODE,
-                riscv::ENV_CALL_SMODE,
-                riscv::ENV_CALL_UMODE,
+                cva6dx_riscv_pkg::ENV_CALL_MMODE,
+                cva6dx_riscv_pkg::ENV_CALL_SMODE,
+                cva6dx_riscv_pkg::ENV_CALL_UMODE,
                 INTERRUPTS.S_SW,
                 INTERRUPTS.M_SW,
                 INTERRUPTS.S_TIMER,

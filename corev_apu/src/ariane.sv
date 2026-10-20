@@ -15,7 +15,7 @@
 `include "rvfi_types.svh"
 `include "cvxif_types.svh"
 
-module ariane import ariane_pkg::*; #(
+module ariane import cva6dx_pkg::*; #(
   parameter config_pkg::cva6_cfg_t CVA6Cfg = config_pkg::cva6_cfg_empty,
   parameter type rvfi_probes_instr_t = `RVFI_PROBES_INSTR_T(CVA6Cfg),
   parameter type rvfi_probes_csr_t = `RVFI_PROBES_CSR_T(CVA6Cfg),
@@ -71,7 +71,7 @@ module ariane import ariane_pkg::*; #(
   cvxif_req_t  cvxif_req;
   cvxif_resp_t cvxif_resp;
 
-  cva6 #(
+  cva6dx_core #(
     .CVA6Cfg ( CVA6Cfg ),
     .rvfi_probes_instr_t ( rvfi_probes_instr_t ),
     .rvfi_probes_csr_t ( rvfi_probes_csr_t ),

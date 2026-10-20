@@ -7,7 +7,7 @@ module csr_wfi_case #(
 ) (
     output bit done_o
 );
-  import ariane_pkg::*;
+  import cva6dx_pkg::*;
   timeunit 1ns; timeprecision 1ps;
 
   function automatic config_pkg::cva6_cfg_t test_config();
@@ -56,9 +56,9 @@ module csr_wfi_case #(
   logic [1:0] irq;
   logic ipi, debug_req;
   logic halt, debug_mode, single_step, set_debug_pc, eret;
-  riscv::priv_lvl_t privilege;
+  cva6dx_riscv_pkg::priv_lvl_t privilege;
 
-  csr_regfile #(
+  cva6dx_csr_regfile #(
       .CVA6Cfg(Cfg),
       .exception_t(exception_t),
       .jvt_t(jvt_t),
@@ -166,7 +166,7 @@ module csr_wfi_case #(
   task automatic enter_debug();
     debug_req = 1;
     exception_in.valid = 1;
-    exception_in.cause = riscv::DEBUG_REQUEST;
+    exception_in.cause = cva6dx_riscv_pkg::DEBUG_REQUEST;
     pc = Cfg.VLEN'('h80000020);
     #1ns;
     check(set_debug_pc, "debug-request redirect");
@@ -178,11 +178,11 @@ module csr_wfi_case #(
 
   task automatic configure_step(input bit step_enable, input bit stepie);
     xlen_t dcsr;
-    read_csr(riscv::CSR_DCSR, dcsr);
+    read_csr(cva6dx_riscv_pkg::CSR_DCSR, dcsr);
     dcsr[2]   = step_enable;
     dcsr[11]  = stepie;
-    dcsr[1:0] = riscv::PRIV_LVL_M;
-    write_csr(riscv::CSR_DCSR, dcsr);
+    dcsr[1:0] = cva6dx_riscv_pkg::PRIV_LVL_M;
+    write_csr(cva6dx_riscv_pkg::CSR_DCSR, dcsr);
     check(single_step == step_enable, "step CSR programming");
   endtask
 
@@ -193,7 +193,7 @@ module csr_wfi_case #(
     check(eret, "DRET return indication");
     tick();
     idle();
-    check(!debug_mode && !halt && privilege == riscv::PRIV_LVL_M,
+    check(!debug_mode && !halt && privilege == cva6dx_riscv_pkg::PRIV_LVL_M,
           "DRET must resume running in M mode");
   endtask
 
@@ -214,7 +214,7 @@ module csr_wfi_case #(
 
   task automatic normal_wfi_tests();
     reset_dut();
-    write_csr(riscv::CSR_MIE, xlen_t'(1 << 3));
+    write_csr(cva6dx_riscv_pkg::CSR_MIE, xlen_t'(1 << 3));
     commit_wfi(xlen_t'('h80000040));
     repeat (3) begin
       check(halt && !debug_mode, "ordinary WFI must wait");
@@ -241,7 +241,7 @@ module csr_wfi_case #(
     // Exercise the CSR module's exception guard without retirement.
     op = WFI;
     exception_in.valid = 1;
-    exception_in.cause = riscv::ILLEGAL_INSTR;
+    exception_in.cause = cva6dx_riscv_pkg::ILLEGAL_INSTR;
     tick();
     idle();
     check(!halt, "exceptional WFI must not set the wait state");
@@ -263,18 +263,18 @@ module csr_wfi_case #(
     commit_wfi(xlen_t'('h80000040));
     check(debug_mode, "stepped WFI must re-enter Debug Mode");
     check(!halt, "ISSUE3497: stepped WFI leaked halt into Debug Mode");
-    read_csr(riscv::CSR_DCSR, value);
+    read_csr(cva6dx_riscv_pkg::CSR_DCSR, value);
     check(value[8:6] == CauseSingleStep, "single-step debug cause");
-    check(value[1:0] == riscv::PRIV_LVL_M, "single-step saved privilege");
-    read_csr(riscv::CSR_DPC, value);
+    check(value[1:0] == cva6dx_riscv_pkg::PRIV_LVL_M, "single-step saved privilege");
+    read_csr(cva6dx_riscv_pkg::CSR_DPC, value);
     check(value == xlen_t'('h80000044), "DPC must equal WFI PC + 4");
     repeat (4) begin
       tick();
       check(debug_mode && !halt, "no delayed WFI halt in Debug Mode");
     end
     // Demonstrate continued CSR access; this does not execute a Debug ROM.
-    write_csr(riscv::CSR_DSCRATCH0, xlen_t'('h13579bdf));
-    read_csr(riscv::CSR_DSCRATCH0, value);
+    write_csr(cva6dx_riscv_pkg::CSR_DSCRATCH0, xlen_t'('h13579bdf));
+    read_csr(cva6dx_riscv_pkg::CSR_DSCRATCH0, value);
     check(value == xlen_t'('h13579bdf), "debug CSR access after stepped WFI");
     configure_step(0, stepie);
     resume_mmode();

@@ -13,7 +13,7 @@
 // Description: Ariane Top-level wrapper to break out SV structs to logic vectors.
 
 module ariane_verilog_wrap
-    import ariane_pkg::*;
+    import cva6dx_pkg::*;
     import config_pkg::*;
     import l15_pkg::*;
 #(
@@ -232,7 +232,7 @@ module ariane_verilog_wrap
   // logic wake_up_d, wake_up_q;
   // logic rst_n;
 
-  // assign wake_up_d = wake_up_q || ((l15_rtrn.l15_returntype == wt_cache_pkg::L15_INT_RET) && l15_rtrn.l15_val);
+  // assign wake_up_d = wake_up_q || ((l15_rtrn.l15_returntype == cva6dx_wt_cache_pkg::L15_INT_RET) && l15_rtrn.l15_val);
 
   // always_ff @(posedge clk_i or negedge reset_l) begin : p_regs
   //   if(~reset_l) begin

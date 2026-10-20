@@ -51,7 +51,7 @@ class instr_trace_item #(
 
     // constructor creating a new instruction trace item, e.g.: a single instruction with all relevant information
     function new (time simtime, longint unsigned cycle, scoreboard_entry_t sbe, logic [31:0] instr, logic [63:0] gp_reg_file [32],
-                logic [63:0] fp_reg_file [32], logic [63:0] result, logic dest_we_valid, logic dest_is_fp, logic [CVA6Cfg.PLEN-1:0] paddr, riscv::priv_lvl_t priv_lvl, logic debug_mode, bp_resolve_t bp);
+                logic [63:0] fp_reg_file [32], logic [63:0] result, logic dest_we_valid, logic dest_is_fp, logic [CVA6Cfg.PLEN-1:0] paddr, cva6dx_riscv_pkg::priv_lvl_t priv_lvl, logic debug_mode, bp_resolve_t bp);
         this.simtime  = simtime;
         this.cycle    = cycle;
         this.pc       = sbe.pc;
@@ -145,65 +145,65 @@ class instr_trace_item #(
 
     function string csrAddrToStr(logic [11:0] addr);
         case (addr)
-            riscv::CSR_FFLAGS:     return "fflags";
-            riscv::CSR_FRM:        return "frm";
-            riscv::CSR_FCSR:       return "fcsr";
-            riscv::CSR_SSTATUS:    return "sstatus";
-            riscv::CSR_SIE:        return "sie";
-            riscv::CSR_STVEC:      return "stvec";
-            riscv::CSR_SCOUNTEREN: return "scounteren";
-            riscv::CSR_SSCRATCH:   return "sscratch";
-            riscv::CSR_SEPC:       return "sepc";
-            riscv::CSR_SCAUSE:     return "scause";
-            riscv::CSR_STVAL:      return "stval";
-            riscv::CSR_SIP:        return "sip";
-            riscv::CSR_SATP:       return "satp";
+            cva6dx_riscv_pkg::CSR_FFLAGS:     return "fflags";
+            cva6dx_riscv_pkg::CSR_FRM:        return "frm";
+            cva6dx_riscv_pkg::CSR_FCSR:       return "fcsr";
+            cva6dx_riscv_pkg::CSR_SSTATUS:    return "sstatus";
+            cva6dx_riscv_pkg::CSR_SIE:        return "sie";
+            cva6dx_riscv_pkg::CSR_STVEC:      return "stvec";
+            cva6dx_riscv_pkg::CSR_SCOUNTEREN: return "scounteren";
+            cva6dx_riscv_pkg::CSR_SSCRATCH:   return "sscratch";
+            cva6dx_riscv_pkg::CSR_SEPC:       return "sepc";
+            cva6dx_riscv_pkg::CSR_SCAUSE:     return "scause";
+            cva6dx_riscv_pkg::CSR_STVAL:      return "stval";
+            cva6dx_riscv_pkg::CSR_SIP:        return "sip";
+            cva6dx_riscv_pkg::CSR_SATP:       return "satp";
 
-            riscv::CSR_MSTATUS:    return "mstatus";
-            riscv::CSR_MISA:       return "misa";
-            riscv::CSR_MEDELEG:    return "medeleg";
-            riscv::CSR_MIDELEG:    return "mideleg";
-            riscv::CSR_MIE:        return "mie";
-            riscv::CSR_MTVEC:      return "mtvec";
-            riscv::CSR_MCOUNTEREN: return "mcounteren";
-            riscv::CSR_MSCRATCH:   return "mscratch";
-            riscv::CSR_MEPC:       return "mepc";
-            riscv::CSR_MCAUSE:     return "mcause";
-            riscv::CSR_MTVAL:      return "mtval";
-            riscv::CSR_MIP:        return "mip";
-            riscv::CSR_PMPCFG0:    return "pmpcfg0";
-            riscv::CSR_PMPADDR0:   return "pmpaddr0";
-            riscv::CSR_MVENDORID:  return "mvendorid";
-            riscv::CSR_MARCHID:    return "marchid";
-            riscv::CSR_MIMPID:     return "mimpid";
-            riscv::CSR_MHARTID:    return "mhartid";
-            riscv::CSR_MCYCLE:     return "mcycle";
-            riscv::CSR_MINSTRET:   return "minstret";
+            cva6dx_riscv_pkg::CSR_MSTATUS:    return "mstatus";
+            cva6dx_riscv_pkg::CSR_MISA:       return "misa";
+            cva6dx_riscv_pkg::CSR_MEDELEG:    return "medeleg";
+            cva6dx_riscv_pkg::CSR_MIDELEG:    return "mideleg";
+            cva6dx_riscv_pkg::CSR_MIE:        return "mie";
+            cva6dx_riscv_pkg::CSR_MTVEC:      return "mtvec";
+            cva6dx_riscv_pkg::CSR_MCOUNTEREN: return "mcounteren";
+            cva6dx_riscv_pkg::CSR_MSCRATCH:   return "mscratch";
+            cva6dx_riscv_pkg::CSR_MEPC:       return "mepc";
+            cva6dx_riscv_pkg::CSR_MCAUSE:     return "mcause";
+            cva6dx_riscv_pkg::CSR_MTVAL:      return "mtval";
+            cva6dx_riscv_pkg::CSR_MIP:        return "mip";
+            cva6dx_riscv_pkg::CSR_PMPCFG0:    return "pmpcfg0";
+            cva6dx_riscv_pkg::CSR_PMPADDR0:   return "pmpaddr0";
+            cva6dx_riscv_pkg::CSR_MVENDORID:  return "mvendorid";
+            cva6dx_riscv_pkg::CSR_MARCHID:    return "marchid";
+            cva6dx_riscv_pkg::CSR_MIMPID:     return "mimpid";
+            cva6dx_riscv_pkg::CSR_MHARTID:    return "mhartid";
+            cva6dx_riscv_pkg::CSR_MCYCLE:     return "mcycle";
+            cva6dx_riscv_pkg::CSR_MINSTRET:   return "minstret";
 
-            riscv::CSR_TSELECT:    return "tselect";
-            riscv::CSR_TDATA1:     return "tdata1";
-            riscv::CSR_TDATA2:     return "tdata2";
-            riscv::CSR_TDATA3:     return "tdata3";
-            riscv::CSR_TINFO:      return "tinfo";
+            cva6dx_riscv_pkg::CSR_TSELECT:    return "tselect";
+            cva6dx_riscv_pkg::CSR_TDATA1:     return "tdata1";
+            cva6dx_riscv_pkg::CSR_TDATA2:     return "tdata2";
+            cva6dx_riscv_pkg::CSR_TDATA3:     return "tdata3";
+            cva6dx_riscv_pkg::CSR_TINFO:      return "tinfo";
 
-            riscv::CSR_DCSR:       return "dcsr";
-            riscv::CSR_DPC:        return "dpc";
-            riscv::CSR_DSCRATCH0:  return "dscratch0";
-            riscv::CSR_DSCRATCH1:  return "dscratch1";
+            cva6dx_riscv_pkg::CSR_DCSR:       return "dcsr";
+            cva6dx_riscv_pkg::CSR_DPC:        return "dpc";
+            cva6dx_riscv_pkg::CSR_DSCRATCH0:  return "dscratch0";
+            cva6dx_riscv_pkg::CSR_DSCRATCH1:  return "dscratch1";
 
-            riscv::CSR_CYCLE:      return "cycle";
-            riscv::CSR_TIME:       return "time";
-            riscv::CSR_INSTRET:    return "instret";
+            cva6dx_riscv_pkg::CSR_CYCLE:      return "cycle";
+            cva6dx_riscv_pkg::CSR_TIME:       return "time";
+            cva6dx_riscv_pkg::CSR_INSTRET:    return "instret";
 
             default:        return $sformatf("%0h", addr);
         endcase
     endfunction
 
     function logic scoreboardDestIsFp();
-        if (sbe.fu inside {ariane_pkg::FPU, ariane_pkg::FPU_VEC}) begin
-            return ariane_pkg::fd_changes_rd_state(sbe.op);
+        if (sbe.fu inside {cva6dx_pkg::FPU, cva6dx_pkg::FPU_VEC}) begin
+            return cva6dx_pkg::fd_changes_rd_state(sbe.op);
         end
-        return ariane_pkg::is_rd_fpr(sbe.op);
+        return cva6dx_pkg::is_rd_fpr(sbe.op);
     endfunction
 
     function logic rawDestIsFp();
@@ -218,7 +218,7 @@ class instr_trace_item #(
         logic [4:0] funct5 = instr[31:27];
         logic [2:0] rm     = instr[14:12];
 
-        if (opcode == riscv::OpcodeOpFp) begin
+        if (opcode == cva6dx_riscv_pkg::OpcodeOpFp) begin
             if (funct5 == 5'b11000) begin
                 // fcvt.*.* instructions that target an integer register
                 return 1'b1;
@@ -266,168 +266,168 @@ class instr_trace_item #(
 
         case (instr) inside
              // Aliases
-            instr_tracer_pkg::INSTR_NOP:      s = this.printMnemonic("nop");
+            cva6dx_instr_tracer_pkg::INSTR_NOP:      s = this.printMnemonic("nop");
             // Regular opcodes
-            instr_tracer_pkg::INSTR_LUI:      s = this.printUInstr("lui");
-            instr_tracer_pkg::INSTR_AUIPC:    s = this.printUInstr("auipc");
-            instr_tracer_pkg::INSTR_JAL:      s = this.printJump("jal");
-            instr_tracer_pkg::INSTR_JALR:     s = this.printJump("jalr");
+            cva6dx_instr_tracer_pkg::INSTR_LUI:      s = this.printUInstr("lui");
+            cva6dx_instr_tracer_pkg::INSTR_AUIPC:    s = this.printUInstr("auipc");
+            cva6dx_instr_tracer_pkg::INSTR_JAL:      s = this.printJump("jal");
+            cva6dx_instr_tracer_pkg::INSTR_JALR:     s = this.printJump("jalr");
             // BRANCH
-            instr_tracer_pkg::INSTR_BEQZ:     s = this.printSBInstr("beqz");
-            instr_tracer_pkg::INSTR_BEQ:      s = this.printSBInstr("beq");
-            instr_tracer_pkg::INSTR_BNEZ:     s = this.printSBInstr("bnez");
-            instr_tracer_pkg::INSTR_BNE:      s = this.printSBInstr("bne");
-            instr_tracer_pkg::INSTR_BLTZ:     s = this.printSBInstr("bltz");
-            instr_tracer_pkg::INSTR_BLT:      s = this.printSBInstr("blt");
-            instr_tracer_pkg::INSTR_BGEZ:     s = this.printSBInstr("bgez");
-            instr_tracer_pkg::INSTR_BGE:      s = this.printSBInstr("bge");
-            instr_tracer_pkg::INSTR_BLTU:     s = this.printSBInstr("bltu");
-            instr_tracer_pkg::INSTR_BGEU:     s = this.printSBInstr("bgeu");
+            cva6dx_instr_tracer_pkg::INSTR_BEQZ:     s = this.printSBInstr("beqz");
+            cva6dx_instr_tracer_pkg::INSTR_BEQ:      s = this.printSBInstr("beq");
+            cva6dx_instr_tracer_pkg::INSTR_BNEZ:     s = this.printSBInstr("bnez");
+            cva6dx_instr_tracer_pkg::INSTR_BNE:      s = this.printSBInstr("bne");
+            cva6dx_instr_tracer_pkg::INSTR_BLTZ:     s = this.printSBInstr("bltz");
+            cva6dx_instr_tracer_pkg::INSTR_BLT:      s = this.printSBInstr("blt");
+            cva6dx_instr_tracer_pkg::INSTR_BGEZ:     s = this.printSBInstr("bgez");
+            cva6dx_instr_tracer_pkg::INSTR_BGE:      s = this.printSBInstr("bge");
+            cva6dx_instr_tracer_pkg::INSTR_BLTU:     s = this.printSBInstr("bltu");
+            cva6dx_instr_tracer_pkg::INSTR_BGEU:     s = this.printSBInstr("bgeu");
             // OPIMM
-            instr_tracer_pkg::INSTR_LI:       s = this.printIInstr("li");
-            instr_tracer_pkg::INSTR_ADDI:     s = this.printIInstr("addi");
-            instr_tracer_pkg::INSTR_SLTI:     s = this.printIInstr("slti");
-            instr_tracer_pkg::INSTR_SLTIU:    s = this.printIInstr("sltiu");
-            instr_tracer_pkg::INSTR_XORI:     s = this.printIInstr("xori");
-            instr_tracer_pkg::INSTR_ORI:      s = this.printIInstr("ori");
-            instr_tracer_pkg::INSTR_ANDI:     s = this.printIInstr("andi");
-            instr_tracer_pkg::INSTR_SLLI:     s = this.printIuInstr("slli");
-            instr_tracer_pkg::INSTR_SRLI:     s = this.printIuInstr("srli");
-            instr_tracer_pkg::INSTR_SRAI:     s = this.printIuInstr("srai");
+            cva6dx_instr_tracer_pkg::INSTR_LI:       s = this.printIInstr("li");
+            cva6dx_instr_tracer_pkg::INSTR_ADDI:     s = this.printIInstr("addi");
+            cva6dx_instr_tracer_pkg::INSTR_SLTI:     s = this.printIInstr("slti");
+            cva6dx_instr_tracer_pkg::INSTR_SLTIU:    s = this.printIInstr("sltiu");
+            cva6dx_instr_tracer_pkg::INSTR_XORI:     s = this.printIInstr("xori");
+            cva6dx_instr_tracer_pkg::INSTR_ORI:      s = this.printIInstr("ori");
+            cva6dx_instr_tracer_pkg::INSTR_ANDI:     s = this.printIInstr("andi");
+            cva6dx_instr_tracer_pkg::INSTR_SLLI:     s = this.printIuInstr("slli");
+            cva6dx_instr_tracer_pkg::INSTR_SRLI:     s = this.printIuInstr("srli");
+            cva6dx_instr_tracer_pkg::INSTR_SRAI:     s = this.printIuInstr("srai");
             // OPIMM32
-            instr_tracer_pkg::INSTR_ADDIW:    s = this.printIInstr("addiw");
-            instr_tracer_pkg::INSTR_SLLIW:    s = this.printIuInstr("slliw");
-            instr_tracer_pkg::INSTR_SRLIW:    s = this.printIuInstr("srliw");
-            instr_tracer_pkg::INSTR_SRAIW:    s = this.printIuInstr("sraiw");
+            cva6dx_instr_tracer_pkg::INSTR_ADDIW:    s = this.printIInstr("addiw");
+            cva6dx_instr_tracer_pkg::INSTR_SLLIW:    s = this.printIuInstr("slliw");
+            cva6dx_instr_tracer_pkg::INSTR_SRLIW:    s = this.printIuInstr("srliw");
+            cva6dx_instr_tracer_pkg::INSTR_SRAIW:    s = this.printIuInstr("sraiw");
             // OP
-            instr_tracer_pkg::INSTR_ADD:      s = this.printRInstr("add");
-            instr_tracer_pkg::INSTR_SUB:      s = this.printRInstr("sub");
-            instr_tracer_pkg::INSTR_SLL:      s = this.printRInstr("sll");
-            instr_tracer_pkg::INSTR_SLT:      s = this.printRInstr("slt");
-            instr_tracer_pkg::INSTR_SLTU:     s = this.printRInstr("sltu");
-            instr_tracer_pkg::INSTR_XOR:      s = this.printRInstr("xor");
-            instr_tracer_pkg::INSTR_SRL:      s = this.printRInstr("srl");
-            instr_tracer_pkg::INSTR_SRA:      s = this.printRInstr("sra");
-            instr_tracer_pkg::INSTR_OR:       s = this.printRInstr("or");
-            instr_tracer_pkg::INSTR_AND:      s = this.printRInstr("and");
-            instr_tracer_pkg::INSTR_MUL:      s = this.printMulInstr(1'b0);
+            cva6dx_instr_tracer_pkg::INSTR_ADD:      s = this.printRInstr("add");
+            cva6dx_instr_tracer_pkg::INSTR_SUB:      s = this.printRInstr("sub");
+            cva6dx_instr_tracer_pkg::INSTR_SLL:      s = this.printRInstr("sll");
+            cva6dx_instr_tracer_pkg::INSTR_SLT:      s = this.printRInstr("slt");
+            cva6dx_instr_tracer_pkg::INSTR_SLTU:     s = this.printRInstr("sltu");
+            cva6dx_instr_tracer_pkg::INSTR_XOR:      s = this.printRInstr("xor");
+            cva6dx_instr_tracer_pkg::INSTR_SRL:      s = this.printRInstr("srl");
+            cva6dx_instr_tracer_pkg::INSTR_SRA:      s = this.printRInstr("sra");
+            cva6dx_instr_tracer_pkg::INSTR_OR:       s = this.printRInstr("or");
+            cva6dx_instr_tracer_pkg::INSTR_AND:      s = this.printRInstr("and");
+            cva6dx_instr_tracer_pkg::INSTR_MUL:      s = this.printMulInstr(1'b0);
             // OP32
-            instr_tracer_pkg::INSTR_ADDW:     s = this.printRInstr("addw");
-            instr_tracer_pkg::INSTR_SUBW:     s = this.printRInstr("subw");
-            instr_tracer_pkg::INSTR_SLLW:     s = this.printRInstr("sllw");
-            instr_tracer_pkg::INSTR_SRLW:     s = this.printRInstr("srlw");
-            instr_tracer_pkg::INSTR_SRAW:     s = this.printRInstr("sraw");
-            instr_tracer_pkg::INSTR_MULW:     s = this.printMulInstr(1'b1);
+            cva6dx_instr_tracer_pkg::INSTR_ADDW:     s = this.printRInstr("addw");
+            cva6dx_instr_tracer_pkg::INSTR_SUBW:     s = this.printRInstr("subw");
+            cva6dx_instr_tracer_pkg::INSTR_SLLW:     s = this.printRInstr("sllw");
+            cva6dx_instr_tracer_pkg::INSTR_SRLW:     s = this.printRInstr("srlw");
+            cva6dx_instr_tracer_pkg::INSTR_SRAW:     s = this.printRInstr("sraw");
+            cva6dx_instr_tracer_pkg::INSTR_MULW:     s = this.printMulInstr(1'b1);
             // FP
-            instr_tracer_pkg::INSTR_FMADD:    s = this.printR4Instr("fmadd");
-            instr_tracer_pkg::INSTR_FMSUB:    s = this.printR4Instr("fmsub");
-            instr_tracer_pkg::INSTR_FNSMSUB:  s = this.printR4Instr("fnmsub");
-            instr_tracer_pkg::INSTR_FNMADD:   s = this.printR4Instr("fnmadd");
+            cva6dx_instr_tracer_pkg::INSTR_FMADD:    s = this.printR4Instr("fmadd");
+            cva6dx_instr_tracer_pkg::INSTR_FMSUB:    s = this.printR4Instr("fmsub");
+            cva6dx_instr_tracer_pkg::INSTR_FNSMSUB:  s = this.printR4Instr("fnmsub");
+            cva6dx_instr_tracer_pkg::INSTR_FNMADD:   s = this.printR4Instr("fnmadd");
 
-            instr_tracer_pkg::INSTR_FADD:     s = this.printRFBCInstr("fadd", 1'b1);
-            instr_tracer_pkg::INSTR_FSUB:     s = this.printRFBCInstr("fsub", 1'b1);
-            instr_tracer_pkg::INSTR_FMUL:     s = this.printRFInstr("fmul", 1'b1);
-            instr_tracer_pkg::INSTR_FDIV:     s = this.printRFInstr("fdiv", 1'b1);
-            instr_tracer_pkg::INSTR_FSQRT:    s = this.printRFInstr1Op("fsqrt", 1'b1);
-            instr_tracer_pkg::INSTR_FSGNJ:    s = this.printRFInstr("fsgnj", 1'b0);
-            instr_tracer_pkg::INSTR_FSGNJN:   s = this.printRFInstr("fsgnjn", 1'b0);
-            instr_tracer_pkg::INSTR_FSGNJX:   s = this.printRFInstr("fsgnjx", 1'b0);
-            instr_tracer_pkg::INSTR_FMIN:     s = this.printRFInstr("fmin", 1'b0);
-            instr_tracer_pkg::INSTR_FMAX:     s = this.printRFInstr("fmax", 1'b0);
-            instr_tracer_pkg::INSTR_FLE:      s = this.printRFInstr("fle", 1'b0);
-            instr_tracer_pkg::INSTR_FLT:      s = this.printRFInstr("flt", 1'b0);
-            instr_tracer_pkg::INSTR_FEQ:      s = this.printRFInstr("feq", 1'b0);
+            cva6dx_instr_tracer_pkg::INSTR_FADD:     s = this.printRFBCInstr("fadd", 1'b1);
+            cva6dx_instr_tracer_pkg::INSTR_FSUB:     s = this.printRFBCInstr("fsub", 1'b1);
+            cva6dx_instr_tracer_pkg::INSTR_FMUL:     s = this.printRFInstr("fmul", 1'b1);
+            cva6dx_instr_tracer_pkg::INSTR_FDIV:     s = this.printRFInstr("fdiv", 1'b1);
+            cva6dx_instr_tracer_pkg::INSTR_FSQRT:    s = this.printRFInstr1Op("fsqrt", 1'b1);
+            cva6dx_instr_tracer_pkg::INSTR_FSGNJ:    s = this.printRFInstr("fsgnj", 1'b0);
+            cva6dx_instr_tracer_pkg::INSTR_FSGNJN:   s = this.printRFInstr("fsgnjn", 1'b0);
+            cva6dx_instr_tracer_pkg::INSTR_FSGNJX:   s = this.printRFInstr("fsgnjx", 1'b0);
+            cva6dx_instr_tracer_pkg::INSTR_FMIN:     s = this.printRFInstr("fmin", 1'b0);
+            cva6dx_instr_tracer_pkg::INSTR_FMAX:     s = this.printRFInstr("fmax", 1'b0);
+            cva6dx_instr_tracer_pkg::INSTR_FLE:      s = this.printRFInstr("fle", 1'b0);
+            cva6dx_instr_tracer_pkg::INSTR_FLT:      s = this.printRFInstr("flt", 1'b0);
+            cva6dx_instr_tracer_pkg::INSTR_FEQ:      s = this.printRFInstr("feq", 1'b0);
 
-            instr_tracer_pkg::INSTR_FCLASS:   s = this.printRFInstr1Op("fclass", 1'b0);
+            cva6dx_instr_tracer_pkg::INSTR_FCLASS:   s = this.printRFInstr1Op("fclass", 1'b0);
 
-            instr_tracer_pkg::INSTR_FCVT_F2F,
-            instr_tracer_pkg::INSTR_FMV_F2X,
-            instr_tracer_pkg::INSTR_FMV_X2F,
-            instr_tracer_pkg::INSTR_FCVT_F2I,
-            instr_tracer_pkg::INSTR_FCVT_I2F: s = this.printFpSpecialInstr(); // these are a mess to do nicely
+            cva6dx_instr_tracer_pkg::INSTR_FCVT_F2F,
+            cva6dx_instr_tracer_pkg::INSTR_FMV_F2X,
+            cva6dx_instr_tracer_pkg::INSTR_FMV_X2F,
+            cva6dx_instr_tracer_pkg::INSTR_FCVT_F2I,
+            cva6dx_instr_tracer_pkg::INSTR_FCVT_I2F: s = this.printFpSpecialInstr(); // these are a mess to do nicely
             // FENCE
-            instr_tracer_pkg::INSTR_FENCE:    s = this.printMnemonic("fence");
-            instr_tracer_pkg::INSTR_FENCEI:   s = this.printMnemonic("fence.i");
+            cva6dx_instr_tracer_pkg::INSTR_FENCE:    s = this.printMnemonic("fence");
+            cva6dx_instr_tracer_pkg::INSTR_FENCEI:   s = this.printMnemonic("fence.i");
             // SYSTEM (CSR manipulation)
-            instr_tracer_pkg::INSTR_CSRW:     s = this.printCSRInstr("csrw");
-            instr_tracer_pkg::INSTR_CSRRW:    s = this.printCSRInstr("csrrw");
-            instr_tracer_pkg::INSTR_CSRR:     s = this.printCSRInstr("csrr");
-            instr_tracer_pkg::INSTR_CSRRS:    s = this.printCSRInstr("csrrs");
-            instr_tracer_pkg::INSTR_CSRS:     s = this.printCSRInstr("csrs");
-            instr_tracer_pkg::INSTR_CSRRC:    s = this.printCSRInstr("csrrc");
-            instr_tracer_pkg::INSTR_CSRC:     s = this.printCSRInstr("csrc");
+            cva6dx_instr_tracer_pkg::INSTR_CSRW:     s = this.printCSRInstr("csrw");
+            cva6dx_instr_tracer_pkg::INSTR_CSRRW:    s = this.printCSRInstr("csrrw");
+            cva6dx_instr_tracer_pkg::INSTR_CSRR:     s = this.printCSRInstr("csrr");
+            cva6dx_instr_tracer_pkg::INSTR_CSRRS:    s = this.printCSRInstr("csrrs");
+            cva6dx_instr_tracer_pkg::INSTR_CSRS:     s = this.printCSRInstr("csrs");
+            cva6dx_instr_tracer_pkg::INSTR_CSRRC:    s = this.printCSRInstr("csrrc");
+            cva6dx_instr_tracer_pkg::INSTR_CSRC:     s = this.printCSRInstr("csrc");
 
-            instr_tracer_pkg::INSTR_CSRWI:    s = this.printCSRInstr("csrwi");
-            instr_tracer_pkg::INSTR_CSRRWI:   s = this.printCSRInstr("csrrwi");
-            instr_tracer_pkg::INSTR_CSRSI:    s = this.printCSRInstr("csrsi");
-            instr_tracer_pkg::INSTR_CSRRSI:   s = this.printCSRInstr("csrrsi");
-            instr_tracer_pkg::INSTR_CSRCI:    s = this.printCSRInstr("csrci");
-            instr_tracer_pkg::INSTR_CSRRCI:   s = this.printCSRInstr("csrrci");
+            cva6dx_instr_tracer_pkg::INSTR_CSRWI:    s = this.printCSRInstr("csrwi");
+            cva6dx_instr_tracer_pkg::INSTR_CSRRWI:   s = this.printCSRInstr("csrrwi");
+            cva6dx_instr_tracer_pkg::INSTR_CSRSI:    s = this.printCSRInstr("csrsi");
+            cva6dx_instr_tracer_pkg::INSTR_CSRRSI:   s = this.printCSRInstr("csrrsi");
+            cva6dx_instr_tracer_pkg::INSTR_CSRCI:    s = this.printCSRInstr("csrci");
+            cva6dx_instr_tracer_pkg::INSTR_CSRRCI:   s = this.printCSRInstr("csrrci");
             // SYSTEM (others)
-            instr_tracer_pkg::INSTR_ECALL:    s = this.printMnemonic("ecall");
-            instr_tracer_pkg::INSTR_EBREAK:   s = this.printMnemonic("ebreak");
-            instr_tracer_pkg::INSTR_MRET:     s = this.printMnemonic("mret");
-            instr_tracer_pkg::INSTR_SRET:     s = this.printMnemonic("sret");
-            instr_tracer_pkg::INSTR_DRET:     s = this.printMnemonic("dret");
-            instr_tracer_pkg::INSTR_WFI:      s = this.printMnemonic("wfi");
-            instr_tracer_pkg::INSTR_SFENCE:   s = this.printMnemonic("sfence.vma");
+            cva6dx_instr_tracer_pkg::INSTR_ECALL:    s = this.printMnemonic("ecall");
+            cva6dx_instr_tracer_pkg::INSTR_EBREAK:   s = this.printMnemonic("ebreak");
+            cva6dx_instr_tracer_pkg::INSTR_MRET:     s = this.printMnemonic("mret");
+            cva6dx_instr_tracer_pkg::INSTR_SRET:     s = this.printMnemonic("sret");
+            cva6dx_instr_tracer_pkg::INSTR_DRET:     s = this.printMnemonic("dret");
+            cva6dx_instr_tracer_pkg::INSTR_WFI:      s = this.printMnemonic("wfi");
+            cva6dx_instr_tracer_pkg::INSTR_SFENCE:   s = this.printMnemonic("sfence.vma");
             // loads and stores
-            instr_tracer_pkg::LB:             s = this.printLoadInstr("lb");
-            instr_tracer_pkg::LH:             s = this.printLoadInstr("lh");
-            instr_tracer_pkg::LW:             s = this.printLoadInstr("lw");
-            instr_tracer_pkg::LD:             s = this.printLoadInstr("ld");
-            instr_tracer_pkg::LBU:            s = this.printLoadInstr("lbu");
-            instr_tracer_pkg::LHU:            s = this.printLoadInstr("lhu");
-            instr_tracer_pkg::LWU:            s = this.printLoadInstr("lwu");
-            instr_tracer_pkg::FLW:            s = this.printLoadInstr("flw");
-            instr_tracer_pkg::FLD:            s = this.printLoadInstr("fld");
-            instr_tracer_pkg::FLQ:            s = this.printLoadInstr("flq");
-            instr_tracer_pkg::SB:             s = this.printStoreInstr("sb");
-            instr_tracer_pkg::SH:             s = this.printStoreInstr("sh");
-            instr_tracer_pkg::SW:             s = this.printStoreInstr("sw");
-            instr_tracer_pkg::SD:             s = this.printStoreInstr("sd");
-            instr_tracer_pkg::FSW:            s = this.printStoreInstr("fsw");
-            instr_tracer_pkg::FSD:            s = this.printStoreInstr("fsd");
-            instr_tracer_pkg::FSQ:            s = this.printStoreInstr("fsq");
-            instr_tracer_pkg::INSTR_AMO:      s = this.printAMOInstr();
+            cva6dx_instr_tracer_pkg::LB:             s = this.printLoadInstr("lb");
+            cva6dx_instr_tracer_pkg::LH:             s = this.printLoadInstr("lh");
+            cva6dx_instr_tracer_pkg::LW:             s = this.printLoadInstr("lw");
+            cva6dx_instr_tracer_pkg::LD:             s = this.printLoadInstr("ld");
+            cva6dx_instr_tracer_pkg::LBU:            s = this.printLoadInstr("lbu");
+            cva6dx_instr_tracer_pkg::LHU:            s = this.printLoadInstr("lhu");
+            cva6dx_instr_tracer_pkg::LWU:            s = this.printLoadInstr("lwu");
+            cva6dx_instr_tracer_pkg::FLW:            s = this.printLoadInstr("flw");
+            cva6dx_instr_tracer_pkg::FLD:            s = this.printLoadInstr("fld");
+            cva6dx_instr_tracer_pkg::FLQ:            s = this.printLoadInstr("flq");
+            cva6dx_instr_tracer_pkg::SB:             s = this.printStoreInstr("sb");
+            cva6dx_instr_tracer_pkg::SH:             s = this.printStoreInstr("sh");
+            cva6dx_instr_tracer_pkg::SW:             s = this.printStoreInstr("sw");
+            cva6dx_instr_tracer_pkg::SD:             s = this.printStoreInstr("sd");
+            cva6dx_instr_tracer_pkg::FSW:            s = this.printStoreInstr("fsw");
+            cva6dx_instr_tracer_pkg::FSD:            s = this.printStoreInstr("fsd");
+            cva6dx_instr_tracer_pkg::FSQ:            s = this.printStoreInstr("fsq");
+            cva6dx_instr_tracer_pkg::INSTR_AMO:      s = this.printAMOInstr();
             // Compressed Instructions
-            instr_tracer_pkg::C_FLD:          s = this.printLoadInstr("c.fld");
-            instr_tracer_pkg::C_LW:           s = this.printLoadInstr("c.lw");
-            instr_tracer_pkg::C_LD:           s = this.printLoadInstr("c.ld");
-            instr_tracer_pkg::C_LWSP:         s = this.printLoadInstr("c.lwsp");
-            instr_tracer_pkg::C_LDSP:         s = this.printLoadInstr("c.ldsp");
-            instr_tracer_pkg::C_FLDSP:        s = this.printLoadInstr("c.fldsp");
-            instr_tracer_pkg::C_SDSP:         s = this.printStoreInstr("c.sdsp");
-            instr_tracer_pkg::C_SWSP:         s = this.printStoreInstr("c.swsp");
-            instr_tracer_pkg::C_FSDSP:        s = this.printStoreInstr("c.fsdsp");
-            instr_tracer_pkg::C_SW:           s = this.printStoreInstr("c.sw");
-            instr_tracer_pkg::C_SD:           s = this.printStoreInstr("c.sd");
-            instr_tracer_pkg::C_FSD:          s = this.printStoreInstr("c.fsd");
-            instr_tracer_pkg::C_J:            s = this.printJump("c.j");
-            instr_tracer_pkg::C_JR:           s = this.printJump("c.jr");
-            instr_tracer_pkg::C_JALR:         s = this.printJump("c.jalr");
-            instr_tracer_pkg::C_MV:           s = this.printRInstr("c.mv");
-            instr_tracer_pkg::C_ADD:          s = this.printRInstr("c.add");
-            instr_tracer_pkg::C_BEQZ:         s = this.printSBInstr("c.beqz");
-            instr_tracer_pkg::C_BNEZ:         s = this.printSBInstr("c.bnez");
-            instr_tracer_pkg::C_LUI:          s = this.printUInstr("c.lui");
-            instr_tracer_pkg::C_LI:           s = this.printIInstr("c.li");
-            instr_tracer_pkg::C_ADDI:         s = this.printIInstr("c.addi");
-            instr_tracer_pkg::C_ADDI16SP:     s = this.printIInstr("c.addi16sp");
-            instr_tracer_pkg::C_ADDIW:        s = this.printIInstr("c.addiw");
-            instr_tracer_pkg::C_SLLI:         s = this.printIInstr("c.slli");
-            instr_tracer_pkg::C_SRLI:         s = this.printIInstr("c.srli");
-            instr_tracer_pkg::C_SRAI:         s = this.printIInstr("c.srai");
-            instr_tracer_pkg::C_ANDI:         s = this.printIInstr("c.andi");
-            instr_tracer_pkg::C_ADDI4SPN:     s = this.printIInstr("c.addi4spn");
-            instr_tracer_pkg::C_SUB:          s = this.printRInstr("c.sub");
-            instr_tracer_pkg::C_XOR:          s = this.printRInstr("c.xor");
-            instr_tracer_pkg::C_OR:           s = this.printRInstr("c.or");
-            instr_tracer_pkg::C_AND:          s = this.printRInstr("c.and");
-            instr_tracer_pkg::C_SUBW:         s = this.printRInstr("c.subw");
-            instr_tracer_pkg::C_ADDW:         s = this.printRInstr("c.addw");
-            instr_tracer_pkg::C_NOP:          s = this.printMnemonic("c.nop");
-            instr_tracer_pkg::C_EBREAK:       s = this.printMnemonic("c.ebreak");
+            cva6dx_instr_tracer_pkg::C_FLD:          s = this.printLoadInstr("c.fld");
+            cva6dx_instr_tracer_pkg::C_LW:           s = this.printLoadInstr("c.lw");
+            cva6dx_instr_tracer_pkg::C_LD:           s = this.printLoadInstr("c.ld");
+            cva6dx_instr_tracer_pkg::C_LWSP:         s = this.printLoadInstr("c.lwsp");
+            cva6dx_instr_tracer_pkg::C_LDSP:         s = this.printLoadInstr("c.ldsp");
+            cva6dx_instr_tracer_pkg::C_FLDSP:        s = this.printLoadInstr("c.fldsp");
+            cva6dx_instr_tracer_pkg::C_SDSP:         s = this.printStoreInstr("c.sdsp");
+            cva6dx_instr_tracer_pkg::C_SWSP:         s = this.printStoreInstr("c.swsp");
+            cva6dx_instr_tracer_pkg::C_FSDSP:        s = this.printStoreInstr("c.fsdsp");
+            cva6dx_instr_tracer_pkg::C_SW:           s = this.printStoreInstr("c.sw");
+            cva6dx_instr_tracer_pkg::C_SD:           s = this.printStoreInstr("c.sd");
+            cva6dx_instr_tracer_pkg::C_FSD:          s = this.printStoreInstr("c.fsd");
+            cva6dx_instr_tracer_pkg::C_J:            s = this.printJump("c.j");
+            cva6dx_instr_tracer_pkg::C_JR:           s = this.printJump("c.jr");
+            cva6dx_instr_tracer_pkg::C_JALR:         s = this.printJump("c.jalr");
+            cva6dx_instr_tracer_pkg::C_MV:           s = this.printRInstr("c.mv");
+            cva6dx_instr_tracer_pkg::C_ADD:          s = this.printRInstr("c.add");
+            cva6dx_instr_tracer_pkg::C_BEQZ:         s = this.printSBInstr("c.beqz");
+            cva6dx_instr_tracer_pkg::C_BNEZ:         s = this.printSBInstr("c.bnez");
+            cva6dx_instr_tracer_pkg::C_LUI:          s = this.printUInstr("c.lui");
+            cva6dx_instr_tracer_pkg::C_LI:           s = this.printIInstr("c.li");
+            cva6dx_instr_tracer_pkg::C_ADDI:         s = this.printIInstr("c.addi");
+            cva6dx_instr_tracer_pkg::C_ADDI16SP:     s = this.printIInstr("c.addi16sp");
+            cva6dx_instr_tracer_pkg::C_ADDIW:        s = this.printIInstr("c.addiw");
+            cva6dx_instr_tracer_pkg::C_SLLI:         s = this.printIInstr("c.slli");
+            cva6dx_instr_tracer_pkg::C_SRLI:         s = this.printIInstr("c.srli");
+            cva6dx_instr_tracer_pkg::C_SRAI:         s = this.printIInstr("c.srai");
+            cva6dx_instr_tracer_pkg::C_ANDI:         s = this.printIInstr("c.andi");
+            cva6dx_instr_tracer_pkg::C_ADDI4SPN:     s = this.printIInstr("c.addi4spn");
+            cva6dx_instr_tracer_pkg::C_SUB:          s = this.printRInstr("c.sub");
+            cva6dx_instr_tracer_pkg::C_XOR:          s = this.printRInstr("c.xor");
+            cva6dx_instr_tracer_pkg::C_OR:           s = this.printRInstr("c.or");
+            cva6dx_instr_tracer_pkg::C_AND:          s = this.printRInstr("c.and");
+            cva6dx_instr_tracer_pkg::C_SUBW:         s = this.printRInstr("c.subw");
+            cva6dx_instr_tracer_pkg::C_ADDW:         s = this.printRInstr("c.addw");
+            cva6dx_instr_tracer_pkg::C_NOP:          s = this.printMnemonic("c.nop");
+            cva6dx_instr_tracer_pkg::C_EBREAK:       s = this.printMnemonic("c.ebreak");
             default:                          s = this.printMnemonic("INVALID");
         endcase
 
@@ -463,43 +463,43 @@ class instr_trace_item #(
 
         case (instr) inside
             // check of the instruction was a load or store
-            instr_tracer_pkg::C_SDSP,
-            instr_tracer_pkg::C_SWSP,
-            instr_tracer_pkg::C_FSWSP,
-            instr_tracer_pkg::C_FSDSP,
-            instr_tracer_pkg::C_SW,
-            instr_tracer_pkg::C_SD,
-            instr_tracer_pkg::C_FSW,
-            instr_tracer_pkg::C_FSD,
-            instr_tracer_pkg::SB,
-            instr_tracer_pkg::SH,
-            instr_tracer_pkg::SW,
-            instr_tracer_pkg::SD,
-            instr_tracer_pkg::FSW,
-            instr_tracer_pkg::FSD,
-            instr_tracer_pkg::FSQ: begin
+            cva6dx_instr_tracer_pkg::C_SDSP,
+            cva6dx_instr_tracer_pkg::C_SWSP,
+            cva6dx_instr_tracer_pkg::C_FSWSP,
+            cva6dx_instr_tracer_pkg::C_FSDSP,
+            cva6dx_instr_tracer_pkg::C_SW,
+            cva6dx_instr_tracer_pkg::C_SD,
+            cva6dx_instr_tracer_pkg::C_FSW,
+            cva6dx_instr_tracer_pkg::C_FSD,
+            cva6dx_instr_tracer_pkg::SB,
+            cva6dx_instr_tracer_pkg::SH,
+            cva6dx_instr_tracer_pkg::SW,
+            cva6dx_instr_tracer_pkg::SD,
+            cva6dx_instr_tracer_pkg::FSW,
+            cva6dx_instr_tracer_pkg::FSD,
+            cva6dx_instr_tracer_pkg::FSQ: begin
                 logic [CVA6Cfg.VLEN-1:0] vaddress = gp_reg_file[read_regs[1]] + this.imm;
                 s = $sformatf("%s VA: %x PA: %x", s, vaddress, this.paddr);
             end
 
-            instr_tracer_pkg::C_FLD,
-            instr_tracer_pkg::C_FLW,
-            instr_tracer_pkg::C_LW,
-            instr_tracer_pkg::C_LD,
-            instr_tracer_pkg::C_LWSP,
-            instr_tracer_pkg::C_LDSP,
-            instr_tracer_pkg::C_FLWSP,
-            instr_tracer_pkg::C_FLDSP,
-            instr_tracer_pkg::LB,
-            instr_tracer_pkg::LH,
-            instr_tracer_pkg::LW,
-            instr_tracer_pkg::LD,
-            instr_tracer_pkg::LBU,
-            instr_tracer_pkg::LHU,
-            instr_tracer_pkg::LWU,
-            instr_tracer_pkg::FLW,
-            instr_tracer_pkg::FLD,
-            instr_tracer_pkg::FLQ: begin
+            cva6dx_instr_tracer_pkg::C_FLD,
+            cva6dx_instr_tracer_pkg::C_FLW,
+            cva6dx_instr_tracer_pkg::C_LW,
+            cva6dx_instr_tracer_pkg::C_LD,
+            cva6dx_instr_tracer_pkg::C_LWSP,
+            cva6dx_instr_tracer_pkg::C_LDSP,
+            cva6dx_instr_tracer_pkg::C_FLWSP,
+            cva6dx_instr_tracer_pkg::C_FLDSP,
+            cva6dx_instr_tracer_pkg::LB,
+            cva6dx_instr_tracer_pkg::LH,
+            cva6dx_instr_tracer_pkg::LW,
+            cva6dx_instr_tracer_pkg::LD,
+            cva6dx_instr_tracer_pkg::LBU,
+            cva6dx_instr_tracer_pkg::LHU,
+            cva6dx_instr_tracer_pkg::LWU,
+            cva6dx_instr_tracer_pkg::FLW,
+            cva6dx_instr_tracer_pkg::FLD,
+            cva6dx_instr_tracer_pkg::FLQ: begin
                 logic [CVA6Cfg.VLEN-1:0] vaddress = gp_reg_file[read_regs[0]] + this.imm;
                 s = $sformatf("%s VA: %x PA: %x", s, vaddress, this.paddr);
             end
@@ -508,11 +508,11 @@ class instr_trace_item #(
     endfunction : printInstr
 
     // Return the current privilege level as a string
-    function string getPrivLevel(input riscv::priv_lvl_t priv_lvl);
+    function string getPrivLevel(input cva6dx_riscv_pkg::priv_lvl_t priv_lvl);
         case (priv_lvl)
-            riscv::PRIV_LVL_M: return "M";
-            riscv::PRIV_LVL_S: return "S";
-            riscv::PRIV_LVL_U: return "U";
+            cva6dx_riscv_pkg::PRIV_LVL_M: return "M";
+            cva6dx_riscv_pkg::PRIV_LVL_S: return "S";
+            cva6dx_riscv_pkg::PRIV_LVL_U: return "U";
         endcase
     endfunction : getPrivLevel
 
@@ -538,14 +538,14 @@ class instr_trace_item #(
         result_regs.push_back(rd);
         result_fpr.push_back(dest_fp);
         read_regs.push_back(rs2);
-        read_fpr.push_back(ariane_pkg::is_rs2_fpr(sbe.op));
+        read_fpr.push_back(cva6dx_pkg::is_rs2_fpr(sbe.op));
         read_regs.push_back(sbe.result[4:0]);
-        read_fpr.push_back(ariane_pkg::is_imm_fpr(sbe.op));
+        read_fpr.push_back(cva6dx_pkg::is_imm_fpr(sbe.op));
 
         if (use_rnd && instr[14:12]!=3'b111)
-            return $sformatf("%-12s %4s, %s, %s, %s", $sformatf("%s.%s",mnemonic, fpFmtToStr(instr[26:25])), dest_fp?fpRegAddrToStr(rd):regAddrToStr(rd), ariane_pkg::is_rs2_fpr(sbe.op)?fpRegAddrToStr(rs2):regAddrToStr(rs2), ariane_pkg::is_imm_fpr(sbe.op)?fpRegAddrToStr(sbe.result[4:0]):regAddrToStr(sbe.result[4:0]), fpRmToStr(instr[14:12]));
+            return $sformatf("%-12s %4s, %s, %s, %s", $sformatf("%s.%s",mnemonic, fpFmtToStr(instr[26:25])), dest_fp?fpRegAddrToStr(rd):regAddrToStr(rd), cva6dx_pkg::is_rs2_fpr(sbe.op)?fpRegAddrToStr(rs2):regAddrToStr(rs2), cva6dx_pkg::is_imm_fpr(sbe.op)?fpRegAddrToStr(sbe.result[4:0]):regAddrToStr(sbe.result[4:0]), fpRmToStr(instr[14:12]));
         else
-            return $sformatf("%-12s %4s, %s, %s", $sformatf("%s.%s",mnemonic, fpFmtToStr(instr[26:25])), dest_fp?fpRegAddrToStr(rd):regAddrToStr(rd), ariane_pkg::is_rs2_fpr(sbe.op)?fpRegAddrToStr(rs2):regAddrToStr(rs2), ariane_pkg::is_imm_fpr(sbe.op)?fpRegAddrToStr(sbe.result[4:0]):regAddrToStr(sbe.result[4:0]));
+            return $sformatf("%-12s %4s, %s, %s", $sformatf("%s.%s",mnemonic, fpFmtToStr(instr[26:25])), dest_fp?fpRegAddrToStr(rd):regAddrToStr(rd), cva6dx_pkg::is_rs2_fpr(sbe.op)?fpRegAddrToStr(rs2):regAddrToStr(rs2), cva6dx_pkg::is_imm_fpr(sbe.op)?fpRegAddrToStr(sbe.result[4:0]):regAddrToStr(sbe.result[4:0]));
     endfunction // printRFInstr
 
     function string printRFInstr(input string mnemonic, input bit use_rnd);
@@ -554,14 +554,14 @@ class instr_trace_item #(
         result_regs.push_back(rd);
         result_fpr.push_back(dest_fp);
         read_regs.push_back(rs1);
-        read_fpr.push_back(ariane_pkg::is_rs1_fpr(sbe.op));
+        read_fpr.push_back(cva6dx_pkg::is_rs1_fpr(sbe.op));
         read_regs.push_back(rs2);
-        read_fpr.push_back(ariane_pkg::is_rs2_fpr(sbe.op));
+        read_fpr.push_back(cva6dx_pkg::is_rs2_fpr(sbe.op));
 
         if (use_rnd && instr[14:12]!=3'b111)
-            return $sformatf("%-12s %4s, %s, %s, %s", $sformatf("%s.%s",mnemonic, fpFmtToStr(instr[26:25])), dest_fp?fpRegAddrToStr(rd):regAddrToStr(rd), ariane_pkg::is_rs1_fpr(sbe.op)?fpRegAddrToStr(rs1):regAddrToStr(rs1), ariane_pkg::is_rs2_fpr(sbe.op)?fpRegAddrToStr(rs2):regAddrToStr(rs2), fpRmToStr(instr[14:12]));
+            return $sformatf("%-12s %4s, %s, %s, %s", $sformatf("%s.%s",mnemonic, fpFmtToStr(instr[26:25])), dest_fp?fpRegAddrToStr(rd):regAddrToStr(rd), cva6dx_pkg::is_rs1_fpr(sbe.op)?fpRegAddrToStr(rs1):regAddrToStr(rs1), cva6dx_pkg::is_rs2_fpr(sbe.op)?fpRegAddrToStr(rs2):regAddrToStr(rs2), fpRmToStr(instr[14:12]));
         else
-            return $sformatf("%-12s %4s, %s, %s", $sformatf("%s.%s",mnemonic, fpFmtToStr(instr[26:25])), dest_fp?fpRegAddrToStr(rd):regAddrToStr(rd), ariane_pkg::is_rs1_fpr(sbe.op)?fpRegAddrToStr(rs1):regAddrToStr(rs1), ariane_pkg::is_rs2_fpr(sbe.op)?fpRegAddrToStr(rs2):regAddrToStr(rs2));
+            return $sformatf("%-12s %4s, %s, %s", $sformatf("%s.%s",mnemonic, fpFmtToStr(instr[26:25])), dest_fp?fpRegAddrToStr(rd):regAddrToStr(rd), cva6dx_pkg::is_rs1_fpr(sbe.op)?fpRegAddrToStr(rs1):regAddrToStr(rs1), cva6dx_pkg::is_rs2_fpr(sbe.op)?fpRegAddrToStr(rs2):regAddrToStr(rs2));
     endfunction // printRFInstr
 
     function string printRFInstr1Op(input string mnemonic, input bit use_rnd);
@@ -570,12 +570,12 @@ class instr_trace_item #(
         result_regs.push_back(rd);
         result_fpr.push_back(dest_fp);
         read_regs.push_back(rs1);
-        read_fpr.push_back(ariane_pkg::is_rs1_fpr(sbe.op));
+        read_fpr.push_back(cva6dx_pkg::is_rs1_fpr(sbe.op));
 
         if (use_rnd && instr[14:12]!=3'b111)
-            return $sformatf("%-12s %4s, %s, %s", $sformatf("%s.%s",mnemonic, fpFmtToStr(instr[26:25])), dest_fp?fpRegAddrToStr(rd):regAddrToStr(rd), ariane_pkg::is_rs1_fpr(sbe.op)?fpRegAddrToStr(rs1):regAddrToStr(rs1), fpRmToStr(instr[14:12]));
+            return $sformatf("%-12s %4s, %s, %s", $sformatf("%s.%s",mnemonic, fpFmtToStr(instr[26:25])), dest_fp?fpRegAddrToStr(rd):regAddrToStr(rd), cva6dx_pkg::is_rs1_fpr(sbe.op)?fpRegAddrToStr(rs1):regAddrToStr(rs1), fpRmToStr(instr[14:12]));
         else
-            return $sformatf("%-12s %4s, %s", $sformatf("%s.%s",mnemonic, fpFmtToStr(instr[26:25])), dest_fp?fpRegAddrToStr(rd):regAddrToStr(rd), ariane_pkg::is_rs1_fpr(sbe.op)?fpRegAddrToStr(rs1):regAddrToStr(rs1));
+            return $sformatf("%-12s %4s, %s", $sformatf("%s.%s",mnemonic, fpFmtToStr(instr[26:25])), dest_fp?fpRegAddrToStr(rd):regAddrToStr(rd), cva6dx_pkg::is_rs1_fpr(sbe.op)?fpRegAddrToStr(rs1):regAddrToStr(rs1));
     endfunction // printRFInstr1Op
 
     function string printR4Instr(input string mnemonic);
@@ -598,14 +598,14 @@ class instr_trace_item #(
         result_regs.push_back(rd);
         result_fpr.push_back(dest_fp);
         read_regs.push_back(rs1);
-        read_fpr.push_back(ariane_pkg::is_rs1_fpr(sbe.op));
+        read_fpr.push_back(cva6dx_pkg::is_rs1_fpr(sbe.op));
 
         case (sbe.op)
-            instr_tracer_pkg::INSTR_FCVT_F2F : return $sformatf("%-12s %4s, %s, %s", $sformatf("fcvt.%s.%s", fpFmtToStr(instr[26:25]), fpFmtToStr(instr[21:20])), fpRegAddrToStr(rd), fpRegAddrToStr(rs1), fpRmToStr(instr[14:12]));
-            instr_tracer_pkg::INSTR_FCVT_F2I : return $sformatf("%-12s %4s, %s, %s", $sformatf("fcvt.%s.%s", intFmtToStr(instr[21:20]), fpFmtToStr(instr[26:25])), regAddrToStr(rd), fpRegAddrToStr(rs1), fpRmToStr(instr[14:12]));
-            instr_tracer_pkg::INSTR_FCVT_I2F : return $sformatf("%-12s %4s, %s, %s", $sformatf("fcvt.%s.%s", fpFmtToStr(instr[26:25]), intFmtToStr(instr[21:20])), fpRegAddrToStr(rd), regAddrToStr(rs1), fpRmToStr(instr[14:12]));
-            instr_tracer_pkg::INSTR_FMV_F2X  : return $sformatf("%-12s %4s, %s", $sformatf("fmv.x.%s", fmvFpFmtToStr(instr[26:25])), regAddrToStr(rd), fpRegAddrToStr(rs1));
-            instr_tracer_pkg::INSTR_FMV_X2F  : return $sformatf("%-12s %4s, %s", $sformatf("fmv.%s.x", fmvFpFmtToStr(instr[26:25])), fpRegAddrToStr(rd), regAddrToStr(rs1));
+            cva6dx_instr_tracer_pkg::INSTR_FCVT_F2F : return $sformatf("%-12s %4s, %s, %s", $sformatf("fcvt.%s.%s", fpFmtToStr(instr[26:25]), fpFmtToStr(instr[21:20])), fpRegAddrToStr(rd), fpRegAddrToStr(rs1), fpRmToStr(instr[14:12]));
+            cva6dx_instr_tracer_pkg::INSTR_FCVT_F2I : return $sformatf("%-12s %4s, %s, %s", $sformatf("fcvt.%s.%s", intFmtToStr(instr[21:20]), fpFmtToStr(instr[26:25])), regAddrToStr(rd), fpRegAddrToStr(rs1), fpRmToStr(instr[14:12]));
+            cva6dx_instr_tracer_pkg::INSTR_FCVT_I2F : return $sformatf("%-12s %4s, %s, %s", $sformatf("fcvt.%s.%s", fpFmtToStr(instr[26:25]), intFmtToStr(instr[21:20])), fpRegAddrToStr(rd), regAddrToStr(rs1), fpRmToStr(instr[14:12]));
+            cva6dx_instr_tracer_pkg::INSTR_FMV_F2X  : return $sformatf("%-12s %4s, %s", $sformatf("fmv.x.%s", fmvFpFmtToStr(instr[26:25])), regAddrToStr(rd), fpRegAddrToStr(rs1));
+            cva6dx_instr_tracer_pkg::INSTR_FMV_X2F  : return $sformatf("%-12s %4s, %s", $sformatf("fmv.%s.x", fmvFpFmtToStr(instr[26:25])), fpRegAddrToStr(rd), regAddrToStr(rs1));
         endcase
     endfunction
 
@@ -656,11 +656,11 @@ class instr_trace_item #(
 
     function string printJump(input string mnemonic);
         case (instr[6:0])
-            riscv::OpcodeJalr: begin
+            cva6dx_riscv_pkg::OpcodeJalr: begin
                 // is this a return?
                 if (rd == 'b0 && (rs1 == 'h1 || rs1 == 'h5)) return this.printMnemonic("ret");
             end
-            riscv::OpcodeJal: begin
+            cva6dx_riscv_pkg::OpcodeJal: begin
                 if (rd == 'b0) return this.printUJInstr("j");
             end
         endcase
@@ -714,7 +714,7 @@ class instr_trace_item #(
         // save the immediate for calculating the virtual address
         this.imm = sbe.result;
 
-        if (instr[6:0] == riscv::OpcodeLoadFp)
+        if (instr[6:0] == cva6dx_riscv_pkg::OpcodeLoadFp)
             return $sformatf("%-12s %4s, %0d(%s)", mnemonic, fpRegAddrToStr(rd), $signed(sbe.result), regAddrToStr(rs1));
         else
             return $sformatf("%-12s %4s, %0d(%s)", mnemonic, regAddrToStr(rd), $signed(sbe.result), regAddrToStr(rs1));
@@ -722,13 +722,13 @@ class instr_trace_item #(
 
     function string printStoreInstr(input string mnemonic);
         read_regs.push_back(rs2);
-        read_fpr.push_back(ariane_pkg::is_rs2_fpr(sbe.op));
+        read_fpr.push_back(cva6dx_pkg::is_rs2_fpr(sbe.op));
         read_regs.push_back(rs1);
         read_fpr.push_back(1'b0);
         // save the immediate for calculating the virtual address
         this.imm = sbe.result;
 
-        if (instr[6:0] == riscv::OpcodeStoreFp)
+        if (instr[6:0] == cva6dx_riscv_pkg::OpcodeStoreFp)
             return $sformatf("%-12s %4s, %0d(%s)", mnemonic, fpRegAddrToStr(rs2), $signed(sbe.result), regAddrToStr(rs1));
         else
             return $sformatf("%-12s %4s, %0d(%s)", mnemonic, regAddrToStr(rs2), $signed(sbe.result), regAddrToStr(rs1));
