@@ -1,3 +1,7 @@
+> **CVA6-DX.** This repository (`10x-Engineers/cva6-dx`, branch `dx/main`) carries the CVA6-DX work.
+> Its rules are in [CONTRIBUTING-DX.md](CONTRIBUTING-DX.md) and agents start from [CLAUDE.md](CLAUDE.md).
+> The upstream text below is unchanged.
+
 # Contributing
 
 New motivated Contributors are always welcome.

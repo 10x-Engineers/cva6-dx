@@ -1,3 +1,37 @@
+# CVA6-DX
+
+CVA6-DX is a dual-issue, in-order RV64 application core developed by 10xEngineers from the
+[OpenHW CVA6](https://github.com/openhwgroup/cva6) (baseline commit `81245a47f`). The goal is a
+Linux- and Ubuntu-capable RVA23 core with a vector unit. Every new feature is selected by a
+configuration field, and with all new fields off the core is bit-identical to the baseline CVA6.
+
+**Status:** project set-up. The RTL is the baseline CVA6, reorganised into the CVA6-DX layout
+and naming (behaviour unchanged); feature work has not started.
+
+| Path | Content |
+|---|---|
+| `design/` | core RTL by unit (`frontend`, `decode`, `issue`, `execute`, `lsu`, `cache`, `mmu`, `commit`, `csr`, `pmu`, `cvxif`, `prim`, `rvfi`); top `cva6dx_core`; configurations in `design/cfg/` |
+| `ip/` | third-party IP: HPDcache, CVFPU |
+| `corev_apu/` | APU platform (test harness, FPGA) |
+| `verif/` | verification |
+| `util/dx/` | CVA6-DX scripts; `rename_map.csv` maps upstream paths and names to CVA6-DX ones |
+
+Quick start (Verilator):
+
+```bash
+git clone --recursive https://github.com/10x-Engineers/cva6-dx && cd cva6-dx
+bash verif/regress/install-spike.sh     # needs CPATH pointing at Verilator's include/vltstd
+make verilate target=cv64a6_imafdc_sv39 SPIKE_INSTALL_DIR=$PWD/tools/spike RISCV=$PWD/tools/spike
+```
+
+Contributing: see [CONTRIBUTING-DX.md](CONTRIBUTING-DX.md). Licences: the upstream licence files
+apply to the upstream code (`LICENSE`, `LICENSE.Berkeley`, `LICENSE.SiFive`, and the headers of
+each file).
+
+The upstream CVA6 README follows.
+
+---
+
 # CVA6 RISC-V CPU [![Build Status](https://github.com/openhwgroup/cva6/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/openhwgroup/cva6/actions/workflows/ci.yml) [![CVA6 dashboard](https://riscv-ci.pages.thales-invia.fr/dashboard/badge_master.svg)](https://riscv-ci.pages.thales-invia.fr/dashboard/dashboard_cva6.html) [![Documentation Status](https://readthedocs.com/projects/openhw-group-cva6-user-manual/badge/?version=latest)](https://docs.openhwgroup.org/projects/cva6-user-manual/?badge=latest) [![GitHub release](https://img.shields.io/github/release/openhwgroup/cva6?include_prereleases=&sort=semver&color=blue)](https://github.com/openhwgroup/cva6/releases/)
 
 CVA6 is a 6-stage, single-issue, in-order CPU which implements the 64-bit RISC-V instruction set. It fully implements I, M, A and C extensions as specified in Volume I: User-Level ISA V 2.3 as well as the draft privilege extension 1.10. It implements three privilege levels M, S, U to fully support a Unix-like operating system. Furthermore, it is compliant to the draft external debug spec 0.13.
